@@ -3,6 +3,8 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
 //import { DatePipe } from '@angular/common';
 import { AngularFireAuth } from "@angular/fire/auth";
 import * as firebase from 'firebase';
+import { User } from '../models/user.interface';
+
 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -16,8 +18,8 @@ export class FirestoreService {
   public db;
   
   constructor(public firestore: AngularFirestore,  /*private datePipe: DatePipe,*/ public ngFireAuth: AngularFireAuth,) {
-    this.user = JSON.parse(localStorage.getItem('user'));
-    this.userId = this.user.uid
+    //this.user = JSON.parse(localStorage.getItem('user'));
+    //this.userId = this.user.uid
     this.db = firebase.firestore();
    }
 

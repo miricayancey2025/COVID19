@@ -10,8 +10,17 @@ import { IonicStorageModule } from '@ionic/storage';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
 import { FormsModule } from '@angular/forms';
+
+//  firebase imports, remove what you don't require
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { AngularFirestoreModule } from '@angular/fire/firestore'
+
+
+// environment
+import { environment } from '../environments/environment';
 
 @NgModule({
   imports: [
@@ -19,6 +28,11 @@ import { FormsModule } from '@angular/forms';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireAuthModule,
+    AngularFireDatabaseModule,
+    //AngularFireStorageModule,
+    AngularFirestoreModule,
     IonicModule.forRoot(),
     IonicStorageModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {
@@ -26,7 +40,7 @@ import { FormsModule } from '@angular/forms';
     })
   ],
   declarations: [AppComponent],
-  providers: [InAppBrowser, SplashScreen, StatusBar],
+  providers: [InAppBrowser, SplashScreen, StatusBar, AngularFirestoreModule],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

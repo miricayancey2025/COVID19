@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ConferenceData } from '../../providers/conference-data';
+import { FirestoreService } from '../../services/firestore.service'
 
 @Component({
   selector: 'page-speaker-list',
@@ -7,13 +7,11 @@ import { ConferenceData } from '../../providers/conference-data';
   styleUrls: ['./speaker-list.scss'],
 })
 export class SpeakerListPage {
-  speakers: any[] = [];
+  public currentStudents;
 
-  constructor(public confData: ConferenceData) {}
+  constructor(public firestoreService: FirestoreService,) {}
 
   ionViewDidEnter() {
-    this.confData.getSpeakers().subscribe((speakers: any[]) => {
-      this.speakers = speakers;
-    });
+   this.currentStudents = this.firestoreService.getListAll("student-users").valueChanges();
   }
 }

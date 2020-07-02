@@ -68,7 +68,7 @@ export class RegisterPage implements OnInit {
       ()=>{
       //  this.authService.sendVerificationMail();
 
-      this.authService.createUser(fname, lname, email, false, this.getType(), "assets/icon/default_icon.png", null, null, false, null)
+      this.authService.createUser(fname, lname, email, false, this.getType(), "assets/icon/default_icon.png", null)
         this.router.navigateByUrl('/login');
       },
       async error => {

@@ -52,23 +52,11 @@ export class RegisterPage implements OnInit {
       return console.error("Passwords don't match")
     }
     
-    if(this.pin == '2216'){
-      this.setType("Admin")
-    }
-    else if(this.pin == '1173'){
-      this.setType("Agent")
-
-    }
-    else{
-      this.setType("Client")
-    }
-
-
     this.authService.registerUser(email,password).then(
       ()=>{
-      //  this.authService.sendVerificationMail();
+        this.authService.sendVerificationMail();
 
-      this.authService.createUser(fname, lname, email, false, this.getType(), "assets/icon/default_icon.png", null, null, false, null)
+      this.authService.createUser(fname, lname, email, false, this.getType(), "assets/icon/default_icon.png", null)
         this.router.navigateByUrl('/login');
       },
       async error => {

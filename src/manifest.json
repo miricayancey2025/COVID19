@@ -1,6 +1,6 @@
 {
-  "name": "Ionic Conference",
-  "short_name": "Ionic Conference",
+  "name": "Go-VID",
+  "short_name": "Go-VID",
   "start_url": "index.html",
   "display": "standalone",
   "icons": [

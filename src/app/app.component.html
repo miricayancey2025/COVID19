@@ -23,8 +23,6 @@
             Important
           </ion-list-header>
 
-    
-
           <ion-menu-toggle autoHide="false">
             <ion-item routerLink="/signup" routerLinkActive="active" routerDirection="root" detail="false">
               <ion-icon slot="start" name="person-add"></ion-icon>
@@ -36,22 +34,16 @@
           <ion-menu-toggle autoHide="false">
             <ion-item button (click)="openTutorial()" detail="false">
               <ion-icon slot="start" name="hammer"></ion-icon>
-              <ion-label>COIVD Positive</ion-label>
+              <ion-label>COVID Info</ion-label>
             </ion-item>
           </ion-menu-toggle>
 
         </ion-list>
 
-
-
-
-
         <ion-list *ngIf="!loggedIn" lines="none">
           <ion-list-header>
             Help
           </ion-list-header>
-
-    
 
           <ion-menu-toggle autoHide="false">
             <ion-item routerLink="/signup" routerLinkActive="active" routerDirection="root" detail="false">

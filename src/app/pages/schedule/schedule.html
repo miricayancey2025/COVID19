@@ -12,7 +12,7 @@
       </ion-segment-button>
 
     </ion-segment>
-    <ion-title *ngIf="!ios && !showSearchbar">Hello World!</ion-title>
+    <ion-title *ngIf="!ios && !showSearchbar">Daily News</ion-title>
     <ion-searchbar *ngIf="showSearchbar" showCancelButton="always" [(ngModel)]="queryText" (ionChange)="updateSchedule()" (ionCancel)="showSearchbar = false" placeholder="Search"></ion-searchbar>
     <ion-buttons slot="end">
       <ion-button *ngIf="!ios && !showSearchbar" (click)="showSearchbar = true">
@@ -42,7 +42,7 @@
 <ion-content fullscreen="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Hello World!</ion-title>
+      <ion-title size="large">Daily News</ion-title>
     </ion-toolbar>
     <ion-toolbar>
       <ion-searchbar [(ngModel)]="queryText" (ionChange)="updateSchedule()" placeholder="Search"></ion-searchbar>

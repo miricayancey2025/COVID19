@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Speakers</ion-title>
+    <ion-title>COVID News</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -13,7 +13,7 @@
       <ion-title size="large">COVID News</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-card *ngFor= "let article of data.articles">
+  <ion-card *ngFor= "let article of data?.articles" (click)="openUrl(article.url);">
     <ion-img [src] = "article.urlToImage"></ion-img>
     <ion-card-content>
       <ion-card-title>{{article.title}}</ion-card-title>

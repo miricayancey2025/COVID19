@@ -9,12 +9,12 @@ import { NewsService } from '../../services/news.service';
 })
 export class SpeakerListPage {
   public currentStudents;
-  public data;
+  data:any;
 
   constructor(public firestoreService: FirestoreService, private newsService:NewsService ) {}
 
   ionViewDidEnter() {
-    this.newsService.getData('everything?q=bitcoin&from=2020-06-08&sortBy=publishedAt').subscribe(data => {
+    this.newsService.getData('everything?q=covid-19&from=2020-06-08').subscribe(data => {
       console.log(data);
       this.data = data;
         })

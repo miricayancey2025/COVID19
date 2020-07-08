@@ -16,7 +16,7 @@
   <ion-card *ngFor= "let article of data?.articles">
     <ion-img [src] = "article.urlToImage"></ion-img>
     <ion-card-content>
-      <ion-card-title><a href="www.google.com">{{article.title}}</a></ion-card-title>
+      <ion-card-title>{{article.title}}</ion-card-title>
       <p>{{article.description}}</p>
     </ion-card-content>
   </ion-card>

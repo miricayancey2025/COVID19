@@ -4,6 +4,8 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 export const environment = {
   production: false,
+  apiUrl: 'http://newsapi.org/v2',
+  apiKey: '3dc14bae5256481a8836948584b8a9fa',
   firebaseConfig : {
     apiKey: "AIzaSyA5wtUfH6F5rxpIu0peQFmiYZZdSF18T50",
     authDomain: "go-vid.firebaseapp.com",

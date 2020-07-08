@@ -55,7 +55,7 @@ export class RegisterPage implements OnInit {
     
     this.authService.registerUser(email,password).then(
       ()=>{
-        //this.authService.sendVerificationMail();
+        this.authService.sendVerificationMail();
 
       this.authService.createUser(fname, lname, school, email, false, number, 5, "Student")
         this.router.navigateByUrl('/login');

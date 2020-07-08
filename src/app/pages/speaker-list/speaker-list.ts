@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FirestoreService } from '../../services/firestore.service'
+import { NewsService } from '../../services/news.service';
 
 @Component({
   selector: 'page-speaker-list',
@@ -8,10 +9,15 @@ import { FirestoreService } from '../../services/firestore.service'
 })
 export class SpeakerListPage {
   public currentStudents;
+  public data;
 
-  constructor(public firestoreService: FirestoreService,) {}
+  constructor(public firestoreService: FirestoreService, private newsService:NewsService ) {}
 
   ionViewDidEnter() {
-   this.currentStudents = this.firestoreService.getListAll("student-users").valueChanges();
+    this.newsService.getData('everything?q=bitcoin&from=2020-06-08&sortBy=publishedAt').subscribe(data => {
+      console.log(data);
+      this.data = data;
+        })
+  // this.currentStudents = this.firestoreService.getListAll("student-users").valueChanges();
   }
 }

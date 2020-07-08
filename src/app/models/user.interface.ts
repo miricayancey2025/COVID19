@@ -1,14 +1,13 @@
 export interface User {
-    userUID?: string;
+    userUID: string;
     fname: string;
     lname:string;
-    major: string;
-    //email: string;
-    //emailVerified: boolean;
-
-    //userType: string;
-    //photoURL?: string;
-    //phoneNumber?: string;
+    school: string;
+    email: string;
+    emailVerified: boolean;
+    phoneNumber: string;
+    points: Number;
+    type: string;
     //agentUID?:string;
     //check?: boolean;
     //groupUID?: string;

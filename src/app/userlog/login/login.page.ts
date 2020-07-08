@@ -19,14 +19,6 @@ export class LoginPage implements OnInit {
   password = '';
   db = firebase.firestore();
 
-  setAgent(ag: string){
-    this.dataService.agentID = ag;
-  }
-
-  setClient(ag : string){
-    this.dataService.clientID = ag;
-  }
-
   constructor(
     public authService: AuthService,
     private router: Router,
@@ -65,27 +57,27 @@ export class LoginPage implements OnInit {
                ///AGENT TEMPORARILY ROUTES TO THE ADMIN SIDE 
                                       
 
-                                      if(documentSnapshot.data().userType == "Agent"){
+                                    /*   if(documentSnapshot.data().userType == "Agent"){
                                       self.setAgent(documentSnapshot.data().userUID)
                                       self.router.navigateByUrl('/agent-tabs');
                                       self.authService.setLocalPersist();
 
-                                    }
-                                      else if(documentSnapshot.data().userType == "Client"){
-                                        self.setClient(documentSnapshot.data().userUID)
-                                        self.router.navigateByUrl('/tabs');
+                                    } */
+                                      // else if(documentSnapshot.data().userType == "Client"){
+                                        // self.setClient(documentSnapshot.data().userUID)
+                                        self.router.navigateByUrl('/tutorial');
                                         self.authService.setLocalPersist();
 
       
-                                      }
+                                      /* }
                                     else if(documentSnapshot.data().userType == "Admin"){
                                       self.router.navigateByUrl('/tabs-admin');
                                       self.authService.setLocalPersist();
-                                    }}
+                                    } */}
                                       else {
                                       console.log('document not found');
                                     }
-                              })
+                              }) 
       },
       async error => {
         const alert = this.alertCtrl.create({

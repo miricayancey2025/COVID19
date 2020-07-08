@@ -15,9 +15,10 @@ export class RegisterPage implements OnInit {
   fname: string = " "
   lname: string = " "
   email: string = ""
+  number: string = ""
+  school: string = ""
   password: string = ""
   cpassword: string = ""
-  pin: string=""
 
   setType(val: string){
     this.dataService.type = val;
@@ -47,16 +48,16 @@ export class RegisterPage implements OnInit {
     // }
 
   async register(): Promise<void> {
-    const { fname, lname, email, password, cpassword, pin } = this;
+    const { fname, lname, school, number, email, password, cpassword} = this;
     if(password !== cpassword){
       return console.error("Passwords don't match")
     }
     
     this.authService.registerUser(email,password).then(
       ()=>{
-        this.authService.sendVerificationMail();
+        //this.authService.sendVerificationMail();
 
-      this.authService.createUser(fname, lname, email, false, this.getType(), "assets/icon/default_icon.png", null)
+      this.authService.createUser(fname, lname, school, email, false, number, 5, "Student")
         this.router.navigateByUrl('/login');
       },
       async error => {

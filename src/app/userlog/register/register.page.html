@@ -14,22 +14,35 @@
       <ion-label>Last Name</ion-label>
       <input class="login_input" type="text" onfocus="this.value=''" value="" [(ngModel)]="lname" required>
     </ion-item>
+
+    <ion-item>
+      <ion-label>Number</ion-label>
+      <input class="login_input" type="text" onfocus="this.value=''" value="" [(ngModel)]="number" required>
+    </ion-item>
     <ion-item>
       <ion-label>Email</ion-label>
       <input class="login_input" type="text" onfocus="this.value=''" value="" [(ngModel)]="email" required>
     </ion-item>
+
+    <ion-item>
+      <ion-label>School</ion-label>
+      <ion-select placeholder="Select Your School">
+        <ion-select-option onfocus="this.value=''" value="">Valparaiso University</ion-select-option>
+        <ion-select-option onfocus="this.value=''" value="">Purdue University</ion-select-option>
+      </ion-select>
+    </ion-item>
+
     <ion-item>
       <ion-label>Password</ion-label>
       <input type="password" class="login_input" onfocus="this.value=''" value="" [(ngModel)]="password" required>
     </ion-item>
+
+
     <ion-item>
       <ion-label>Confirm</ion-label>
       <input type="password" class="login_input" onfocus="this.value=''" value="" [(ngModel)]="cpassword" required>
     </ion-item>
-    <ion-item>
-        <ion-label>Access Pin</ion-label>
-        <input type="password" class="login_input" onfocus="this.value=''" value="" [(ngModel)]="pin" required>
-    </ion-item>
+
   </ion-list>
   <ion-button fill="solid" color="light" href="/login" style="float:left; margin-left:5%;">Log In</ion-button>
   <ion-button fill="solid" color="tertiary" (click)="register()" style="float:right; margin-right:7%">Register</ion-button>

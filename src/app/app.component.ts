@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
     {
       title: 'COVID News',
       url: '/app/tabs/covid',
-      icon: 'calculator'
+      icon: 'newspaper'
     },
     {
       title: 'Hotspots',

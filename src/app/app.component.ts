@@ -26,12 +26,17 @@ export class AppComponent implements OnInit {
       icon: 'calendar'
     },
     {
+      title: 'COVID News',
+      url: '/app/tabs/covid',
+      icon: 'calculator'
+    },
+    {
       title: 'Hotspots',
-      url: '/app/tabs/speakers',
+      url: '/app/tabs/map',
       icon: 'people'
     },
     {
-      title: 'COVID Info',
+      title: 'Map',
       url: '/app/tabs/map',
       icon: 'map'
     },

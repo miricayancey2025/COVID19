@@ -19,7 +19,6 @@ export class SpeakerListPage {
 
   ionViewDidEnter() {
     //everything from today will need a date object
-    
     this.newsService.getData('everything?q=covid OR covid-19 OR corona&language=en').subscribe(data => {
       console.log(data);
       this.data = data;

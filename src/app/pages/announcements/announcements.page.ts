@@ -22,7 +22,7 @@ export class AnnouncementsPage implements OnInit {
  ) {}
   ngOnInit() {
     //everything from today will need a date object
-    this.newsService.getData('everything?q=covid OR covid-19 OR corona&language=en&from=${myDate}&sortBy=publishedAt').subscribe(data => {
+    this.newsService.getData('everything?qInTitle=covid OR covid-19 OR corona&language=en&from=${myDate}&sortBy=publishedAt').subscribe(data => {
       console.log(data);
       this.data = data;
         })

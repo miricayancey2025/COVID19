@@ -49,6 +49,25 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'announcements',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../announcements/announcements.module').then(m => m.AnnouncementsPageModule)
+          }
+        ]
+      },
+      {
+        path: 'symptoms',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../symptom-checker/symptom-checker.module').then(m => m.SymptomCheckerPageModule)
+          }
+        ]
+      },
+      
+      {
         path: '',
         redirectTo: '/app/tabs/schedule',
         pathMatch: 'full'

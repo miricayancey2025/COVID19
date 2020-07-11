@@ -40,7 +40,11 @@ const routes: Routes = [
   {
     path: 'symptom-checker',
     loadChildren: () => import('./pages/symptom-checker/symptom-checker.module').then( m => m.SymptomCheckerPageModule)
+  },  {
+    path: 'announcements',
+    loadChildren: () => import('./pages/announcements/announcements.module').then( m => m.AnnouncementsPageModule)
   }
+
 ];
 
 @NgModule({

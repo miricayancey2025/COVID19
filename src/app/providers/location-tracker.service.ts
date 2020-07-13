@@ -12,6 +12,7 @@ export class LocationTrackerService {
   public watch: any;    
   public lat: number = 0;
   public lng: number = 0;
+  private timestamp;
 
   constructor(public zone: NgZone, private backgroundGeolocation : BackgroundGeolocation, private geolocation : Geolocation) { }
 

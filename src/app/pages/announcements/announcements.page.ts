@@ -10,7 +10,7 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./announcements.page.scss'],
   providers: [DatePipe],
 
-})
+}) 
 export class AnnouncementsPage implements OnInit {
   public currentStudents;
   data: any;

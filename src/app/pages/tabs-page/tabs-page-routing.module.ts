@@ -28,6 +28,15 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'maping',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../maping/maping.module').then(m => m.MapingPageModule)
+          }
+        ]
+      },
+      {
         path: 'announcements',
         children: [
           {

@@ -1,18 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
-import { AnnouncementsPageRoutingModule } from './announcements-routing.module';
-import { AnnouncementsPage } from './announcements.page';
 
+import { IonicModule } from '@ionic/angular';
+
+import { MapingPageRoutingModule } from './maping-routing.module';
+
+import { MapingPage } from './maping.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    AnnouncementsPageRoutingModule
+    MapingPageRoutingModule
   ],
-  declarations: [AnnouncementsPage] 
+  declarations: [MapingPage]
 })
-export class AnnouncementsPageModule {}
+export class MapingPageModule {}

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http'
-const API_URL = environment.apiUrl;
-const API_KEY = environment.apiKey;
+const API_URL = environment.news_apiUrl;
+const API_KEY = environment.news_apiKey;
 @Injectable({
   providedIn: 'root'
 })

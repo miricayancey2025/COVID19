@@ -40,11 +40,20 @@ const routes: Routes = [
   {
     path: 'symptom-checker',
     loadChildren: () => import('./pages/symptom-checker/symptom-checker.module').then( m => m.SymptomCheckerPageModule)
-  },  {
+  },
+  {
     path: 'announcements',
     loadChildren: () => import('./pages/announcements/announcements.module').then( m => m.AnnouncementsPageModule)
+  },
+  {
+    path: 'map',
+    loadChildren: () => import('./pages/map/map.module').then( m => m.MapModule)
+  },  {
+    path: 'maping',
+    loadChildren: () => import('./pages/maping/maping.module').then( m => m.MapingPageModule)
   }
 
+ 
 ];
 
 @NgModule({

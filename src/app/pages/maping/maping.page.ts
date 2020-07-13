@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import tt from '@tomtom-international/web-sdk-maps';
 import { MapService } from '../../services/map.service';
-
+import { LocationTrackerService} from '../../providers/location-tracker.service'
 @Component({
   selector: 'app-maping',
   templateUrl: './maping.page.html',
@@ -10,14 +10,19 @@ import { MapService } from '../../services/map.service';
 })
 export class MapingPage implements OnInit {
   data:any;
-  constructor(private mapService : MapService,) { }
+  lat;
+  long;
+  constructor(private mapService : MapService, private loc : LocationTrackerService) { }
 
   ngOnInit() {
 
     this.mapService.getData("370ee789-fc49-46e3-9783-093b004e0d59").subscribe(data => {
       console.log(data);
       this.data = data;
-        })
+        });
+        this.lat = this.loc.lat;
+        this.long = this.loc.lng;
+      
   //   const cent = new tt.LngLat(-87.044285,41.462802);
   //   const map = tt.map({
       
@@ -40,5 +45,4 @@ export class MapingPage implements OnInit {
       
   //   map.addControl(new tt.NavigationControl());
    }
-
 }

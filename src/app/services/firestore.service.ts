@@ -25,34 +25,14 @@ export class FirestoreService {
 
 ////////////Class Group methods///////////////
 
-   createGroup(title: string, date: string): Promise<void> {
-    const id = this.firestore.createId();
-    const leader = this.userId
-    return this.firestore.doc('groups/' + id).set({id, title, date, leader});
+   addFence(col_name, id:string, name:string, pop: number): Promise<void> {
+    return this.firestore.doc(col_name + "/" + id).set({name, pop});
   }
 
-//updates group field of given user   id: user id, val: groupid
-  updateGroup(id: string, val:string){
-    this.db.doc("users/"+id).update({"groupUID" : val})
+  updateFence(col_name, id: string, field:string, value){
+    this.db.doc(col_name + "/"+id).update({field : value})
   }  
   //////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-//////////Entry Methods////////////
-
-  createEntry( title: string, date: string, day: string, content: string, timestamp: string, userUID : string,): Promise<void> {
-    const id = this.firestore.createId();
-    return this.firestore.doc('currentEntries/'  + id).set({id, title, date, day, content, timestamp, userUID,});
-  }
-
-  editEntry(entryId, new_title, new_content){
-    this.db.doc("currentEntries/"+ entryId).update({title : new_title, content: new_content})
-  }
-////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 
 
 
@@ -86,6 +66,31 @@ getSearched(search : string, collection : string, condition: string, condition2:
   return this.firestore.collection(collection, ref => ref.where(field, "==", id).where(condition ,'>=', search).where(condition, "<=", search+"z"));
   
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ///gets all documents with field set to a particular condition

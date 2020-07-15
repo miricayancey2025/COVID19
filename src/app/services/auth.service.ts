@@ -99,10 +99,11 @@ export class AuthService {
   createUser(
     firstName: string, lastName: string, school: string,  email: string,
     emailVerified: boolean, phoneNumber: string, points: Number, type: string
-  ): Promise<void> {
+  ){
     var user = firebase.auth().currentUser;
     var userUID = user.uid;
-    return this.afStore.doc('users/' + userUID).set({userUID, firstName, lastName, school, email, emailVerified, phoneNumber, points, type});
+    this.afStore.doc('users/' + userUID).set({userUID, firstName, lastName, school, email, emailVerified, phoneNumber, points, type});
+    return userUID;
   }
   
   //Data the users can edit of themselves

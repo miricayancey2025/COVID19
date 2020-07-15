@@ -10,7 +10,6 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Storage } from '@ionic/storage';
 
 import { UserData } from './providers/user-data';
-import { LocationTrackerService } from './providers/location-tracker.service';
 
 @Component({
   selector: 'app-root',
@@ -21,11 +20,6 @@ import { LocationTrackerService } from './providers/location-tracker.service';
 
 export class AppComponent implements OnInit {
   appPages = [
-    {
-      title: 'Updates',
-      url: '/app/tabs/schedule',
-      icon: 'calendar'
-    },
     {
       title: 'Announcements',
       url: '/app/tabs/announcements',
@@ -55,17 +49,10 @@ export class AppComponent implements OnInit {
     private userData: UserData,
     private swUpdate: SwUpdate,
     private toastCtrl: ToastController,
-    private locationTracker : LocationTrackerService
   ) {
     this.initializeApp();
   }
-  trackLocation(){
-    this.locationTracker.startTracking();
-  }
 
-  stopLocation(){
-    this.locationTracker.stopTracking();
-  }
 
   async ngOnInit() {
     this.swUpdate.available.subscribe(async res => {
@@ -93,13 +80,12 @@ export class AppComponent implements OnInit {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      this.trackLocation()
     });
   }
 
   openTutorial() {
     this.menu.enable(false);
     this.storage.set('ion_did_tutorial', false);
-    this.router.navigateByUrl('/register');
+    this.router.navigateByUrl('/tutorial');
   }
 }

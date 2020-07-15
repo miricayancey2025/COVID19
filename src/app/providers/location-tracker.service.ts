@@ -14,7 +14,6 @@ export class LocationTrackerService {
   public lat: number = 0;
   public lng: number = 0;
   private timestamp;
-  object_id = "370ee789-fc49-46e3-9783-093b004e0d59";
 
   constructor(public zone: NgZone, private backgroundGeolocation : BackgroundGeolocation, private geolocation : Geolocation,private mapService : MapService,) { }
 
@@ -71,6 +70,7 @@ startTracking() {
     this.zone.run(() => {
       this.lat = position.coords.latitude;
       this.lng = position.coords.longitude;
+      
     });
   });
 

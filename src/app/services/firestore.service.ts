@@ -26,15 +26,18 @@ export class FirestoreService {
 ////////////Class Group methods///////////////
 
    addFence(col_name, id:string, name:string, pop: number): Promise<void> {
-    return this.firestore.doc(col_name + "/" + id).set({name, pop});
+    return this.firestore.doc(col_name + "/" + id).set({id, name, pop});
   }
 
-  updateFence(col_name, id: string, field:string, value){
-    this.db.doc(col_name + "/"+id).update({field : value})
+  updateFence(col_name, id: string, value){
+    this.db.doc(col_name + "/"+id).update({"population" : value})
   }  
   //////////////////////////////////////////////////////////////////////////////////////////////
 
-
+//returns ALL documents in that collection
+getAllFences(doc): AngularFirestoreCollection<any> {
+  return this.firestore.collection(doc);
+}
 
 
 //////////Contact Methods////////////  

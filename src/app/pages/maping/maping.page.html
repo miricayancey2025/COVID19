@@ -8,13 +8,18 @@
 </ion-header>
 
 <ion-content fullscreen="true">
+
+
+
+    <p>{{timeLeft}} Seconds Left....</p> 
+
     <div class="content">
     <p class="title">{{timestamp}}</p>
     <p class="desc">{{data?.summary.name}}</p>
     <p class="desc">{{data?.objectState.geometry.coordinates}}</p>
     </div>
 
-    <p>{{sum | async}}</p>
+    <p>{{sum}}</p>
     
     <button (click)="setPosition()">Set Position</button>
     <button (click)="reportObj()">Report</button>
@@ -22,11 +27,12 @@
     <button (click)="deleteObj(data?.summary.id)">Delete Object</button>
 
     <div class="card" *ngFor="let fence of fences">
-      <p>{{fence.id}}</p>
-      <p>{{fence.name}}</p>
-      <p>{{fence.population}}</p>
+      <p>{{fence.name}} {{fence.population}}</p>
     </div>
 
+    <div class="card" *ngFor="let fence of fenceList | async">
+      <p>FenceList {{fence.name}} {{fence.population}}</p>
+    </div>
 <!-- 
     <div class="content">
       <p class="title">{{data?.summary.name}}</p>

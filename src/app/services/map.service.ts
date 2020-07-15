@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http'
 import { map } from 'rxjs/operators';
+import { FirestoreService } from './firestore.service';
 const API_URL = environment.map_apiUrl;
 const API_KEY = environment.map_apiKey;
 const PROJECT_ID = environment.map_projectID;
@@ -11,8 +12,7 @@ const ADMIN_KEY = environment.map_adminKey
   providedIn: 'root'
 })
 export class MapService {
-  fences;
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private firestoreService: FirestoreService) { }
 
   setObjectPosition(object_id, long, lat){ // sets the user position for location history + hotspot
     var data = `{
@@ -50,7 +50,7 @@ export class MapService {
   }
 
   getData(object_id){
-    return this.http.get(`${API_URL}/geofencing/1/transitions/objects/${object_id}?key=${API_KEY}&from=2020-07-13T01:00:00&to=2020-07-13T23:00:00&projects=${PROJECT_ID}`);
+    return this.http.get(`${API_URL}/geofencing/1/transitions/objects/${object_id}?key=${API_KEY}&from=2020-07-15T01:00:00&to=2020-07-15T23:00:00&projects=${PROJECT_ID}`);
   }
 
   createObject(user_uid, date){ //create a new object under current user id
@@ -82,7 +82,7 @@ export class MapService {
   }
 
   getLocationHistory(object_id){ //gets the location history for 2 weeks for user
-    return this.http.get(`https://api.tomtom.com/locationHistory/1/history/positions/${object_id}?key=${API_KEY}&from=2020-07-13T01:00:00&to=2020-07-13T01:00:00`);
+    return this.http.get(`https://api.tomtom.com/locationHistory/1/history/positions/${object_id}?key=${API_KEY}&from=2020-07-15T01:00:00&to=2020-07-15T01:00:00`);
   }
 
   getFenceHeadCount(fence_id){ // gets a headcount of how many objects are in the fence
@@ -104,6 +104,7 @@ export class MapService {
         }}
        sum = add - sub
       })
+      this.firestoreService.updateFence("valpo_fences", fence_id, sum)
       return sum
     }))
 }
@@ -119,6 +120,6 @@ export class MapService {
     return this.http.get(`https://api.tomtom.com/geofencing/1/projects/${PROJECT_ID}/fences?key=${API_KEY}`)
   }
   getFenceTransitions(fence_id){
-    return this.http.get(`https://api.tomtom.com/geofencing/1/transitions/fences/${fence_id}?key=${API_KEY}&from=2020-07-14T16:00:00`)
+    return this.http.get(`https://api.tomtom.com/geofencing/1/transitions/fences/${fence_id}?key=${API_KEY}&from=2020-07-15T00:00:00&to=2020-07-15T23:59:00`)
   }
 }

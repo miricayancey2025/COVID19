@@ -29,12 +29,6 @@ export class RegisterPage implements OnInit {
   today = new Date()
   date =this.datePipe.transform(this.today, 'short')
 
-  setType(val: string){
-    this.dataService.type = val;
-  }
-  getType(): string{
-    return this.dataService.type
-  }
   constructor(
     public authService: AuthService,
     private router: Router,

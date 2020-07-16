@@ -3,6 +3,9 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import {DataService} from '../../services/data.service'
+import { MapService } from '../../services/map.service';
+import { DatePipe } from '@angular/common';
+
 
 
 
@@ -10,7 +13,10 @@ import {DataService} from '../../services/data.service'
   selector: 'app-register',
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
+  providers: [DatePipe],
+
 })
+
 export class RegisterPage implements OnInit {
   fname: string = " "
   lname: string = " "
@@ -20,17 +26,16 @@ export class RegisterPage implements OnInit {
   password: string = ""
   cpassword: string = ""
 
-  setType(val: string){
-    this.dataService.type = val;
-  }
-  getType(): string{
-    return this.dataService.type
-  }
+  today = new Date()
+  date =this.datePipe.transform(this.today, 'short')
+
   constructor(
     public authService: AuthService,
     private router: Router,
     public AlertCtrl: AlertController,
-    private dataService: DataService
+    private dataService: DataService,
+    private mapService : MapService,
+    private datePipe: DatePipe,
 
     ) { }
 
@@ -57,7 +62,10 @@ export class RegisterPage implements OnInit {
       ()=>{
         this.authService.sendVerificationMail();
 
-      this.authService.createUser(fname, lname, school, email, false, number, 5, "Student")
+      const user = this.authService.createUser(fname, lname, school, email, false, number, 5, "Student")
+      this.mapService.createObject(user, this.date).subscribe(data => {
+        console.log(data);
+      })
         this.router.navigateByUrl('/login');
       },
       async error => {

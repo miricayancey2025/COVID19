@@ -5,7 +5,9 @@ import 'firebase/app'
 import 'firebase/auth'
 import { AlertController } from '@ionic/angular';
 import {DataService} from '../../services/data.service'
+import { MapService } from '../../services/map.service';
 import * as firebase from 'firebase';
+import { LocationTrackerService } from '../../providers/location-tracker.service';
 
 
 @Component({
@@ -20,11 +22,24 @@ export class LoginPage implements OnInit {
   db = firebase.firestore();
 
   constructor(
+    private mapService : MapService,
     public authService: AuthService,
     private router: Router,
     private dataService: DataService,
+    private locationTracker : LocationTrackerService,
     private alertCtrl: AlertController) { }
 
+    trackLocation(){
+      this.locationTracker.startTracking();
+    }
+  
+    stopLocation(){
+      this.locationTracker.stopTracking();
+    }
+    setFences(val){
+      this.dataService.fenceList = val
+    }
+fences;
   ngOnInit() {
   }
 
@@ -65,8 +80,16 @@ export class LoginPage implements OnInit {
                                     } */
                                       // else if(documentSnapshot.data().userType == "Client"){
                                         // self.setClient(documentSnapshot.data().userUID)
-                                        self.router.navigateByUrl('/tutorial');
+                                        self.locationTracker.startTracking();
+                                        self.router.navigateByUrl('/maping');
                                         self.authService.setLocalPersist();
+                                        self.mapService.getFences().subscribe(fence =>{
+                                          self.fences = fence;
+                                          self.fences = Object.keys(self.fences).map(it => self.fences[it])
+                                          self.fences = self.fences[0]
+                                          self.setFences(self.fences)
+                                   
+                                        })
 
       
                                       /* }

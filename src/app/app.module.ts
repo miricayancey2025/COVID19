@@ -17,6 +17,10 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFirestoreModule } from '@angular/fire/firestore'
+import { LocationTrackerService } from './providers/location-tracker.service';
+import { BackgroundGeolocation } from '@ionic-native/background-geolocation/ngx';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+
 
 
 // environment
@@ -41,7 +45,7 @@ import { environment } from '../environments/environment';
     })
   ],
   declarations: [AppComponent],
-  providers: [InAppBrowser, SplashScreen, StatusBar, AngularFirestoreModule],
+  providers: [InAppBrowser, SplashScreen, StatusBar, AngularFirestoreModule, LocationTrackerService,BackgroundGeolocation, Geolocation],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

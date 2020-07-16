@@ -16,27 +16,6 @@ const routes: Routes = [
             path: '',
             component: SchedulePage,
           },
-          {
-            path: 'session/:sessionId',
-            loadChildren: () => import('../session-detail/session-detail.module').then(m => m.SessionDetailModule)
-          }
-        ]
-      },
-      {
-        path: 'covid',
-        children: [
-          {
-            path: '',
-            loadChildren: () => import('../speaker-list/speaker-list.module').then(m => m.SpeakerListModule)
-          },
-          {
-            path: 'session/:sessionId',
-            loadChildren: () => import('../session-detail/session-detail.module').then(m => m.SessionDetailModule)
-          },
-          {
-            path: 'speaker-details/:speakerId',
-            loadChildren: () => import('../speaker-detail/speaker-detail.module').then(m => m.SpeakerDetailModule)
-          }
         ]
       },
       {
@@ -48,6 +27,34 @@ const routes: Routes = [
           }
         ]
       },
+      {
+        path: 'maping',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../maping/maping.module').then(m => m.MapingPageModule)
+          }
+        ]
+      },
+      {
+        path: 'announcements',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../announcements/announcements.module').then(m => m.AnnouncementsPageModule)
+          }
+        ]
+      },
+      {
+        path: 'symptoms',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../symptom-checker/symptom-checker.module').then(m => m.SymptomCheckerPageModule)
+          }
+        ]
+      },
+      
       {
         path: '',
         redirectTo: '/app/tabs/schedule',

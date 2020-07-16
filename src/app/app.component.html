@@ -24,17 +24,17 @@
           </ion-list-header>
 
           <ion-menu-toggle autoHide="false">
-            <ion-item routerLink="/register" routerLinkActive="active" routerDirection="root" detail="false">
-              <ion-icon slot="start" name="person-add"></ion-icon>
+            <ion-item routerLink="/symptom-checker" routerLinkActive="active" routerDirection="root" detail="false">
+              <ion-icon slot="start" name="checkmark-outline"></ion-icon>
               <ion-label>
-                Testing Sites
+                Symptoms Checker
               </ion-label>
             </ion-item>
           </ion-menu-toggle>
           <ion-menu-toggle autoHide="false">
-            <ion-item button (click)="openTutorial()" detail="false">
-              <ion-icon slot="start" name="hammer"></ion-icon>
-              <ion-label>COVID Info</ion-label>
+            <ion-item>
+              <ion-icon slot="start" name="notifications-outline"></ion-icon>
+              <ion-label>Notification</ion-label>
             </ion-item>
           </ion-menu-toggle>
 
@@ -44,21 +44,6 @@
           <ion-list-header>
             Help
           </ion-list-header>
-
-          <ion-menu-toggle autoHide="false">
-            <ion-item routerLink="/register" routerLinkActive="active" routerDirection="root" detail="false">
-              <ion-icon slot="start" name="person-add"></ion-icon>
-              <ion-label>
-                About
-              </ion-label>
-            </ion-item>
-            <ion-item routerLink="/register" routerLinkActive="active" routerDirection="root" detail="false">
-              <ion-icon slot="start" name="person-add"></ion-icon>
-              <ion-label>
-                Settings
-              </ion-label>
-            </ion-item>
-          </ion-menu-toggle>
           <ion-menu-toggle autoHide="false">
             <ion-item button (click)="openTutorial()" detail="false">
               <ion-icon slot="start" name="hammer"></ion-icon>

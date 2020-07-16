@@ -2,19 +2,17 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { AnnouncementsPageRoutingModule } from './announcements-routing.module';
+import { AnnouncementsPage } from './announcements.page';
 
-import { SchedulePage } from './schedule';
-import { SchedulePageRoutingModule } from './schedule-routing.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    SchedulePageRoutingModule
+    AnnouncementsPageRoutingModule
   ],
-  declarations: [
-    SchedulePage,
-  ],
+  declarations: [AnnouncementsPage] 
 })
-export class ScheduleModule { }
+export class AnnouncementsPageModule {}

@@ -21,7 +21,7 @@ const routes: Routes = [
     loadChildren: () => import('./userlog/login/login.module').then(m => m.LoginPageModule)
   },
   {
-    path: 'forgot-passowrd',
+    path: 'forgot-password',
     loadChildren: () => import('./userlog/forgot-password/forgot-password.module').then(m => m.ForgotPasswordPageModule)
   },
   {
@@ -36,7 +36,26 @@ const routes: Routes = [
     path: 'tutorial',
     loadChildren: () => import('./pages/tutorial/tutorial.module').then(m => m.TutorialModule),
     canLoad: [CheckTutorial]
+  },
+  {
+    path: 'symptom-checker',
+    loadChildren: () => import('./pages/symptom-checker/symptom-checker.module').then( m => m.SymptomCheckerPageModule)
+  },
+  {
+    path: 'announcements',
+    loadChildren: () => import('./pages/announcements/announcements.module').then( m => m.AnnouncementsPageModule)
+  },
+  {
+    path: 'map',
+    loadChildren: () => import('./pages/map/map.module').then( m => m.MapModule)
+  },
+  {
+    path: 'maping',
+    loadChildren: () => import('./pages/maping/maping.module').then( m => m.MapingPageModule)
+
   }
+
+ 
 ];
 
 @NgModule({

@@ -21,17 +21,17 @@ import { UserData } from './providers/user-data';
 export class AppComponent implements OnInit {
   appPages = [
     {
-      title: 'Updates',
-      url: '/app/tabs/schedule',
-      icon: 'calendar'
+      title: 'Announcements',
+      url: '/app/tabs/announcements',
+      icon: 'newspaper'
     },
     {
       title: 'Hotspots',
-      url: '/app/tabs/speakers',
+      url: '/app/tabs/map',
       icon: 'people'
     },
     {
-      title: 'COVID Info',
+      title: 'Map',
       url: '/app/tabs/map',
       icon: 'map'
     },
@@ -52,6 +52,7 @@ export class AppComponent implements OnInit {
   ) {
     this.initializeApp();
   }
+
 
   async ngOnInit() {
     this.swUpdate.available.subscribe(async res => {
@@ -85,6 +86,6 @@ export class AppComponent implements OnInit {
   openTutorial() {
     this.menu.enable(false);
     this.storage.set('ion_did_tutorial', false);
-    this.router.navigateByUrl('/register');
+    this.router.navigateByUrl('/tutorial');
   }
 }

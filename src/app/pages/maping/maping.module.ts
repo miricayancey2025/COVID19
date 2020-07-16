@@ -1,20 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
 import { IonicModule } from '@ionic/angular';
 
-import { SchedulePage } from './schedule';
-import { SchedulePageRoutingModule } from './schedule-routing.module';
+import { MapingPageRoutingModule } from './maping-routing.module';
+
+import { MapingPage } from './maping.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    SchedulePageRoutingModule
+    MapingPageRoutingModule
   ],
-  declarations: [
-    SchedulePage,
-  ],
+  declarations: [MapingPage]
 })
-export class ScheduleModule { }
+export class MapingPageModule {}

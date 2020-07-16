@@ -14,6 +14,28 @@ const ADMIN_KEY = environment.map_adminKey
 export class MapService {
   constructor(private http: HttpClient, private firestoreService: FirestoreService) { }
 
+  changePositions(objList, posList){
+    var num = posList.length
+    for(var x =0; x < objList.length; x++){
+      var rando = Math.floor(Math.random()* Math.floor(num))
+      if(objList[x].id != "29017b68-dc6f-431c-aaaa-09e81400d956"){
+        console.log(objList[x].id)
+        console.log(posList[rando][0], posList[rando][1])
+       this.setObjectPosition(objList[x].id,posList[rando][0], posList[rando][1]).subscribe(data =>{
+         console.log("Position Set")
+       })
+       console.log(posList[rando][0], posList[rando][1])
+        this.postObjectReport(objList[x].id,posList[rando][0], posList[rando][1]).subscribe(data =>{
+          console.log("Position Posted")
+         })
+      }
+    }
+    };
+  
+  getObjects(){
+    return this.http.get(`https://api.tomtom.com/geofencing/1/objects?key=${API_KEY}`)
+  }
+
   setObjectPosition(object_id, long, lat){ // sets the user position for location history + hotspot
     var data = `{
       "type": "Feature",
@@ -29,7 +51,7 @@ export class MapService {
     const headers = { 'Content-type': 'application/json'}  
     const body=JSON.parse(data);
 
-
+    
     return this.http.post(`https://api.tomtom.com/locationHistory/1/history/positions?key=${API_KEY}`, body,{'headers':headers})
   }
 
@@ -49,22 +71,18 @@ export class MapService {
 
   }
 
-  getData(object_id){
-    return this.http.get(`${API_URL}/geofencing/1/transitions/objects/${object_id}?key=${API_KEY}&from=2020-07-15T01:00:00&to=2020-07-15T23:00:00&projects=${PROJECT_ID}`);
-  }
-
-  createObject(user_uid, date){ //create a new object under current user id
-    var data = `{
-      "name": "location_object",
-      "properties": {
-        "user": "${user_uid}",
-        "creationTime": "${date}"
-       }
-    }`
-    const headers = { 'Content-type': 'application/json'}  
-    const body=JSON.parse(data);
-    return this.http.post(`https://api.tomtom.com/locationHistory/1/objects/object?key=${API_KEY}&adminKey=${ADMIN_KEY}`, body,{'headers':headers})
-  }
+  // createObject(user_uid, date){ //create a new object under current user id
+  //   var data = `{
+  //     "name": "location_object",
+  //     "properties": {
+  //       "user": "${user_uid}",
+  //       "creationTime": "${date}"
+  //      }
+  //   }`
+  //   const headers = { 'Content-type': 'application/json'}  
+  //   const body=JSON.parse(data);
+  //   return this.http.post(`https://api.tomtom.com/locationHistory/1/objects/object?key=${API_KEY}&adminKey=${ADMIN_KEY}`, body,{'headers':headers})
+  // }
 
   deleteObject(object_id){ //delete object and all of it's data as well as connection to user
     this.http.delete(`https://api.tomtom.com/locationHistory/1/objects/${object_id}?key=${API_KEY}&adminKey=${ADMIN_KEY}`)
@@ -82,7 +100,7 @@ export class MapService {
   }
 
   getLocationHistory(object_id){ //gets the location history for 2 weeks for user
-    return this.http.get(`https://api.tomtom.com/locationHistory/1/history/positions/${object_id}?key=${API_KEY}&from=2020-07-15T01:00:00&to=2020-07-15T01:00:00`);
+    return this.http.get(`https://api.tomtom.com/locationHistory/1/history/positions/${object_id}?key=${API_KEY}&from=2020-07-16T01:00:00&to=2020-07-16T01:00:00`);
   }
 
   getFenceHeadCount(fence_id){ // gets a headcount of how many objects are in the fence
@@ -96,7 +114,7 @@ export class MapService {
         var add = 0;
         var sub = 0;
        for(var x = 0; x <population.length; x++){
-          if(population[x] == "ENTER" || population[x] == "DWELL"){
+          if(population[x] == "ENTER"){
             add++;
           }
         else if (population[x] == "EXIT"){
@@ -120,6 +138,6 @@ export class MapService {
     return this.http.get(`https://api.tomtom.com/geofencing/1/projects/${PROJECT_ID}/fences?key=${API_KEY}`)
   }
   getFenceTransitions(fence_id){
-    return this.http.get(`https://api.tomtom.com/geofencing/1/transitions/fences/${fence_id}?key=${API_KEY}&from=2020-07-15T00:00:00&to=2020-07-15T23:59:00`)
+    return this.http.get(`https://api.tomtom.com/geofencing/1/transitions/fences/${fence_id}?key=${API_KEY}&from=2020-07-16T00:00:00&to=2020-07-16T23:59:59`)
   }
 }

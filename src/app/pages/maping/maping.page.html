@@ -12,6 +12,7 @@
 
 
     <p>{{timeLeft}} Seconds Left....</p> 
+    <p>{{switch}} Switching in...</p>
 
     <div class="content">
     <p class="title">{{timestamp}}</p>
@@ -20,7 +21,7 @@
     </div>
 
     <p>{{sum}}</p>
-    
+    <button (click)="movePositions()">Move</button>
     <button (click)="setPosition()">Set Position</button>
     <button (click)="reportObj()">Report</button>
     <button (click)="createObj()">Add Object</button>

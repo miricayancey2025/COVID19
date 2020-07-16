@@ -3,9 +3,8 @@ import tt from '@tomtom-international/web-sdk-maps';
 import { MapService } from '../../services/map.service';
 import { LocationTrackerService} from '../../providers/location-tracker.service'
 import { DatePipe } from '@angular/common';
-import { IonRefresher } from '@ionic/angular';
-import { range } from 'rxjs';
 import { FirestoreService } from '../../services/firestore.service';
+import { timeStamp } from 'console';
 
 @Component({
   selector: 'app-maping',
@@ -16,60 +15,96 @@ import { FirestoreService } from '../../services/firestore.service';
 })
 export class MapingPage implements OnInit {
   data:any;
-  lat;
-  long;
-  object_id = "29017b68-dc6f-431c-aaaa-09e81400d956"
+  lat;long;
   timestamp;
-  today = new Date()
-  date =this.datePipe.transform(this.today, 'short')
-  fence_id ="2e42f48d-ec1a-4f59-8947-0c5279aaa34b";
-  sum;
-  fences
   interval;
-  timeLeft: number = 60;
-
+  public objList;
   public fenceList;
+  timeLeft: number = 30
+  switch: number = 10
+  today = new Date();
+  date =this.datePipe.transform(this.today, 'short');
+  object_id = "29017b68-dc6f-431c-aaaa-09e81400d956";
+  positions = [
+    [-87.042634, 41.464394],  //Union
+        
+    [-87.040241, 41.464114], //VUCA
 
+    [-87.044086,41.462898], //Library
+
+    [-87.041720, 41.463089], //Chapel
+
+    [-87.041009, 41.461265], //Welcome Center
+
+  ];
   
   constructor(private firestoreService: FirestoreService,  private mapService : MapService, private datePipe: DatePipe, private loc : LocationTrackerService) { }
 
 
   startTimer(fences) {
+    
     this.interval = setInterval(() => {
       if(this.timeLeft > 0) {
         this.timeLeft--;
       } else {
-        console.log(fences)
+        //console.log(fences)
+        //this.movePositions()
         fences.forEach(element => {
           element.forEach(f => {
               this.mapService.getFenceHeadCount(f.fence_id).subscribe(data =>{
                 console.log("Successful Fence Update!")
-              })
-          });
-        });
-        this.timeLeft = 60;
-
+              })});});
+        this.timeLeft = 30;
       }
-    },1000)
-  }
+    },1000)}
+
+    getCount(fences){
+      fences.forEach(element => {
+        element.forEach(f => {
+            this.mapService.getFenceHeadCount(f.fence_id).subscribe(data =>{
+              console.log("Successful Fence!")
+            })});});
+      this.timeLeft = 30;
+    }
+    
+
+    getObjects() {
+      return new Promise((resolve) =>{
+        this.mapService.getObjects().subscribe(obj =>{
+          this.objList = obj;
+           this.objList = Object.keys(this.objList).map(it => this.objList[it])
+           this.objList = this.objList[0]
+           console.log(this.objList)
+           resolve()
+          })
+      })
+    }
+      movePositions(){
+        this.getObjects().then(() =>{
+        this.mapService.changePositions(this.objList, this.positions)
+      })}
+
+    
+    
+    
+  
+
+
 
   pauseTimer() {
     clearInterval(this.interval);
   }
 
-
-
   setPosition(){
-    this.mapService.setObjectPosition(this.object_id, this.long,this.lat).subscribe(data => {
-      console.log(data);
+    this.mapService.setObjectPosition(this.object_id, this.long,this.lat).subscribe(data =>{
+      console.log('Tried Position')
     })
-    console.log('Tried Position')
   }
+
   reportObj(){
-    this.mapService.postObjectReport(this.object_id, this.long,this.lat).subscribe(data => {
-      console.log(data);
+    this.mapService.postObjectReport(this.object_id, this.long,this.lat).subscribe(data =>{
+      console.log('Tried Report')
     })
-    console.log('Tried Report')
   }
 
 
@@ -79,29 +114,31 @@ export class MapingPage implements OnInit {
 
 
   ngOnInit() {
+    this.long =  this.loc.lng;
+    this.lat = this.loc.lat;
     this.fenceList = this.firestoreService.getAllFences("valpo_fences").valueChanges()
-    //this.startTimer(this.fenceList)
-
-     this.mapService.getObjectLastPosition(this.object_id).subscribe(dat => {
-          console.log(dat);
+    this.getCount(this.fenceList)
+    this.startTimer(this.fenceList)  
+     this.mapService.getObjectLastPosition("29017b68-dc6f-431c-aaaa-09e81400d956").subscribe(dat => {
+         // console.log(dat);
           this.data = dat;
           this.timestamp  = this.datePipe.transform(this.data.objectState.timestamp, 'short');
      });
 
-     this.mapService.getFences().subscribe(fence =>{
-       console.log(fence)
-       this.fences = fence;
-       this.fences = Object.keys(this.fences).map(it => this.fences[it])
-       this.fences = this.fences[0]
-       this.fences.forEach(element => { 
-         element.populaton = 0
-        this.mapService.getFenceHeadCount(element.id).subscribe(data =>{
-          element.population = data
-        })
-       });
-       console.log(this.fences[0])
+    //  this.mapService.getFences().subscribe(fence =>{
+    //    console.log(fence)
+    //    this.fences = fence;
+    //    this.fences = Object.keys(this.fences).map(it => this.fences[it])
+    //    this.fences = this.fences[0]
+    //    this.fences.forEach(element => { 
+    //      element.populaton = 0
+    //     this.mapService.getFenceHeadCount(element.id).subscribe(data =>{
+    //       element.population = data
+    //     })
+    //    });
+    //    console.log(this.fences[0])
 
-     })
+    //  })
      
         //this.sum = this.mapService.getFenceHeadCount(this.fence_id)
 
@@ -122,9 +159,6 @@ export class MapingPage implements OnInit {
 
 
      //this.data = this.mapService.getObjectLastPosition(this.object_id).valueChanges()
-
-        this.long =  -80.040241;
-        this.lat = 41.464114;
       // 41.464114, -87.040241
   //   const cent = new tt.LngLat(-87.044285,41.462802);
   //   const map = tt.map({

@@ -8,17 +8,11 @@
 </ion-header>
 
 <ion-content fullscreen="true">
-
+  <div id="map"></div>
 
 
     <p>{{timeLeft}} Seconds Left....</p> 
     <p>{{switch}} Switching in...</p>
-
-    <div class="content">
-    <p class="title">{{timestamp}}</p>
-    <p class="desc">{{data?.summary.name}}</p>
-    <p class="desc">{{data?.objectState.geometry.coordinates}}</p>
-    </div>
 
     <p>{{sum}}</p>
     <button (click)="movePositions()">Move</button>
@@ -27,22 +21,9 @@
     <button (click)="createObj()">Add Object</button>
     <button (click)="deleteObj(data?.summary.id)">Delete Object</button>
 
-    <div class="card" *ngFor="let fence of fences">
-      <p>{{fence.name}} {{fence.population}}</p>
-    </div>
-
     <div class="card" *ngFor="let fence of fenceList | async">
       <p>FenceList {{fence.name}} {{fence.population}}</p>
     </div>
-<!-- 
-    <div class="content">
-      <p class="title">{{data?.summary.name}}</p>
-      <p class="title">{{data?.summary.from}}</p>
-      <p class="title">{{data?.summary.to}}</p>
-      <p class="title">{{data?.resultInfo.itemsCount}}</p>
-      </div> -->
-
-
 
 
 </ion-content>

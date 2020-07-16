@@ -4,7 +4,6 @@ import { MapService } from '../../services/map.service';
 import { LocationTrackerService} from '../../providers/location-tracker.service'
 import { DatePipe } from '@angular/common';
 import { FirestoreService } from '../../services/firestore.service';
-import { timeStamp } from 'console';
 
 @Component({
   selector: 'app-maping',
@@ -139,3 +138,4 @@ export class MapingPage implements OnInit {
     map.addControl(new tt.NavigationControl());
    }
 }
+ 

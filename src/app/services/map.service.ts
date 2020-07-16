@@ -71,18 +71,18 @@ export class MapService {
 
   }
 
-  // createObject(user_uid, date){ //create a new object under current user id
-  //   var data = `{
-  //     "name": "location_object",
-  //     "properties": {
-  //       "user": "${user_uid}",
-  //       "creationTime": "${date}"
-  //      }
-  //   }`
-  //   const headers = { 'Content-type': 'application/json'}  
-  //   const body=JSON.parse(data);
-  //   return this.http.post(`https://api.tomtom.com/locationHistory/1/objects/object?key=${API_KEY}&adminKey=${ADMIN_KEY}`, body,{'headers':headers})
-  // }
+  createObject(user_uid, date){ //create a new object under current user id
+    var data = `{
+      "name": "location_object",
+      "properties": {
+        "user": "${user_uid}",
+        "creationTime": "${date}"
+       }
+    }`
+    const headers = { 'Content-type': 'application/json'}  
+    const body=JSON.parse(data);
+    return this.http.post(`https://api.tomtom.com/locationHistory/1/objects/object?key=${API_KEY}&adminKey=${ADMIN_KEY}`, body,{'headers':headers})
+  }
 
   deleteObject(object_id){ //delete object and all of it's data as well as connection to user
     this.http.delete(`https://api.tomtom.com/locationHistory/1/objects/${object_id}?key=${API_KEY}&adminKey=${ADMIN_KEY}`)

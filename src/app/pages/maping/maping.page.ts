@@ -4,6 +4,8 @@ import { MapService } from '../../services/map.service';
 import { LocationTrackerService} from '../../providers/location-tracker.service'
 import { DatePipe } from '@angular/common';
 import { FirestoreService } from '../../services/firestore.service';
+import { AuthService } from '../../services/auth.service';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-maping',
@@ -23,9 +25,10 @@ export class MapingPage implements OnInit {
   switch: number = 10
   today = new Date();
   previous;
+  db = firebase.firestore();
   current;  // supposed to be the last time fencelist was updated
   date =this.datePipe.transform(this.today, 'short');
-  object_id = "29017b68-dc6f-431c-aaaa-09e81400d956"; //user's object string
+  object_id; //user's object string
   positions = [
     [-87.042634, 41.464394],  //Union    
     [-87.040241, 41.464114], //VUCA
@@ -34,7 +37,7 @@ export class MapingPage implements OnInit {
     [-87.041009, 41.461265], //Welcome Center
   ];
   
-  constructor(private firestoreService: FirestoreService,  private mapService : MapService, private datePipe: DatePipe, private loc : LocationTrackerService) { }
+  constructor(private firestoreService: FirestoreService,  private mapService : MapService,     public authService: AuthService, private datePipe: DatePipe, private loc : LocationTrackerService) { }
 
 
   checkFence(fences) { //sets a timer that automatically updates fence transitions
@@ -125,7 +128,7 @@ export class MapingPage implements OnInit {
 
         else if(num >= 4){
           classList[x].setAttribute("style", "background-color: red")
-          childs[2].textContent = "Exposure Risk: RED"}
+          childs[2].textContent = "Exposure Risk: Red"}
 
         else{
           classList[x].setAttribute("style", "background-color: green")
@@ -136,6 +139,15 @@ export class MapingPage implements OnInit {
     this.long =  this.loc.lng;
     this.lat = this.loc.lat;
     this.fenceList = this.firestoreService.getAllFences("valpo_fences").valueChanges()
+    // var documentReference = this.db.collection('users').doc(this.authService.getUserId());
+    // this.object_id = documentReference.get().then(result =>{
+    //   this.object_id = result.data().object_id
+    //   console.log(this.object_id)
+    // })
+
+
+
+
     //this.getCount(this.fenceList)
     //this.checkFence(this.fenceList)  
     //  this.mapService.getObjectLastPosition("29017b68-dc6f-431c-aaaa-09e81400d956").subscribe(dat => {

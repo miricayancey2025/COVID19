@@ -21,19 +21,24 @@ import { UserData } from './providers/user-data';
 export class AppComponent implements OnInit {
   appPages = [
     {
-      title: 'Announcements',
-      url: '/app/tabs/announcements',
-      icon: 'newspaper'
+      title: 'Hotspots',
+      url: '/app/maping',
+      icon: 'pin-outline'
     },
     {
-      title: 'Hotspots',
-      url: '/app/tabs/map',
-      icon: 'people'
+      title: 'Announcements',
+      url: '/app/announcements',
+      icon: 'newspaper-outline'
+    },
+    {
+      title: 'Symptoms',
+      url: '/app/symptoms',
+      icon: 'checkmark-done-circle-outline'
     },
     {
       title: 'Map',
-      url: '/app/tabs/map',
-      icon: 'map'
+      url: '/app/map',
+      icon: 'alert-circle-outline'
     },
   ];
   loggedIn = false;

@@ -1,29 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs-page';
-import { SchedulePage } from '../schedule/schedule';
 
 
 const routes: Routes = [
   {
-    path: 'tabs',
+    path: '',
     component: TabsPage,
     children: [
       {
-        path: 'schedule',
+        path: 'announcements',
         children: [
           {
             path: '',
-            component: SchedulePage,
-          },
-        ]
-      },
-      {
-        path: 'map',
-        children: [
-          {
-            path: '',
-            loadChildren: () => import('../map/map.module').then(m => m.MapModule)
+            loadChildren: () => import('../announcements/announcements.module').then(m => m.AnnouncementsPageModule)
           }
         ]
       },
@@ -33,15 +23,6 @@ const routes: Routes = [
           {
             path: '',
             loadChildren: () => import('../maping/maping.module').then(m => m.MapingPageModule)
-          }
-        ]
-      },
-      {
-        path: 'announcements',
-        children: [
-          {
-            path: '',
-            loadChildren: () => import('../announcements/announcements.module').then(m => m.AnnouncementsPageModule)
           }
         ]
       },
@@ -57,10 +38,15 @@ const routes: Routes = [
       
       {
         path: '',
-        redirectTo: '/app/tabs/schedule',
+        redirectTo: 'maping',
         pathMatch: 'full'
       }
     ]
+  },
+  {
+    path: '',
+    redirectTo: 'maping',
+    pathMatch: 'full'
   }
 ];
 

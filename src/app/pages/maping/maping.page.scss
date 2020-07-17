@@ -1,6 +1,18 @@
 @import "@tomtom-international/web-sdk-maps";  
+.header{
+    text-align: center;
+    color: rgb(146, 184, 197);
+    border-bottom-style: solid;
+    border-color: lightblue;
+    border-width: 2px;
+    width: 55%;
+    margin-left:22%;
+    margin-top: 5%;
+
+}
   .fence_name{
       padding-top:3%;
+      text-align: center;
   }
   .time{
       float:right;

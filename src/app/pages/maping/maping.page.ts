@@ -12,10 +12,11 @@ import * as firebase from 'firebase';
   templateUrl: './maping.page.html',
   styleUrls: ['./maping.page.scss'],
   providers: [DatePipe],
-  //encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None
 })
 export class MapingPage implements OnInit {
   data:any;
+  marker: any;
   lat;long;
   timestamp;
   interval;
@@ -36,6 +37,7 @@ export class MapingPage implements OnInit {
     [-87.041720, 41.463089], //Chapel
     [-87.041009, 41.461265], //Welcome Center
   ];
+  map: any;
   
   constructor(private firestoreService: FirestoreService,  private mapService : MapService,     public authService: AuthService, private datePipe: DatePipe, private loc : LocationTrackerService) { }
 
@@ -155,25 +157,24 @@ export class MapingPage implements OnInit {
     //       this.data = dat;
     //       this.timestamp  = this.datePipe.transform(this.data.objectState.timestamp, 'short');
     //  });
-    // const cent = new tt.LngLat(-87.044285,41.462802);
-    // const map = tt.map({
+    //xhSLlv6eLXVggB5hbMeTK87voMmu2LV3
+    const cent = new tt.LngLat(-87.044285,41.462802);
+    var center = [ -87.041201, 41.463325]
+    const map = tt.map({
       
-    //   key: 'xhSLlv6eLXVggB5hbMeTK87voMmu2LV3',
+      key: 'xhSLlv6eLXVggB5hbMeTK87voMmu2LV3',
       
-    //   container: 'map',
+      container: 'map',
       
-    //   style: 'tomtom://vector/1/basic-main',
+      style: 'tomtom://vector/1/basic-main',
+      center: center,
+        zoom: 15
+      
+    });
+    for(var x=0; x < this.positions.length; x++){
+      new tt.Marker().setLngLat(this.positions[x]).addTo(map);
 
-    //   //minZoom: 10,
-      
-    //   center: new tt.LngLat(-87.044285,41.462802),
-
-    //   zoom: 14,
-
-      
-    // });
-    
-      
-    // map.addControl(new tt.NavigationControl());
-   }
+    }
+  }
+  
 }

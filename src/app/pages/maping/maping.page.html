@@ -7,23 +7,23 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen="true">
-  <div id="map"></div>
-
-
-    <p>{{timeLeft}} Seconds Left....</p> 
-    <p>{{switch}} Switching in...</p>
-
-    <p>{{sum}}</p>
+<ion-content fullscreen="true" (click)="colorExposure()">
+  <h1> {{ISO_date}}</h1>
+  <h1> {{ISO}}</h1>
+  <!-- <div id="map"></div> -->
+    <div  class="card" *ngFor="let fence of fenceList | async">
+        <div id="content">
+        <h2 class="fence_name">{{fence.name}} &nbsp;{{time}}</h2>
+      <p id="pop"> Population: {{ fence.population }}</p>
+       <p class="exposure"> Exposure Risk: </p>
+      </div>
+  </div>
     <button (click)="movePositions()">Move</button>
     <button (click)="setPosition()">Set Position</button>
     <button (click)="reportObj()">Report</button>
     <button (click)="createObj()">Add Object</button>
     <button (click)="deleteObj(data?.summary.id)">Delete Object</button>
-
-    <div class="card" *ngFor="let fence of fenceList | async">
-      <p>FenceList {{fence.name}} {{fence.population}}</p>
-    </div>
+    <p>{{timeLeft}} Seconds Left....     {{switch}} Switching in...</p> 
 
 
 </ion-content>

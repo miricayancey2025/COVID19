@@ -7,6 +7,7 @@ const API_URL = environment.map_apiUrl;
 const API_KEY = environment.map_apiKey;
 const PROJECT_ID = environment.map_projectID;
 const ADMIN_KEY = environment.map_adminKey
+var ISO_date = new Date().toISOString().substring(0, new Date().toISOString().length - 5)
 
 @Injectable({
   providedIn: 'root'
@@ -71,18 +72,18 @@ export class MapService {
 
   }
 
-  // createObject(user_uid, date){ //create a new object under current user id
-  //   var data = `{
-  //     "name": "location_object",
-  //     "properties": {
-  //       "user": "${user_uid}",
-  //       "creationTime": "${date}"
-  //      }
-  //   }`
-  //   const headers = { 'Content-type': 'application/json'}  
-  //   const body=JSON.parse(data);
-  //   return this.http.post(`https://api.tomtom.com/locationHistory/1/objects/object?key=${API_KEY}&adminKey=${ADMIN_KEY}`, body,{'headers':headers})
-  // }
+  createObject(user_uid, date){ //create a new object under current user id
+    var data = `{
+      "name": "location_object",
+      "properties": {
+        "user": "${user_uid}",
+        "creationTime": "${date}"
+       }
+    }`
+    const headers = { 'Content-type': 'application/json'}  
+    const body=JSON.parse(data);
+    return this.http.post(`https://api.tomtom.com/locationHistory/1/objects/object?key=${API_KEY}&adminKey=${ADMIN_KEY}`, body,{'headers':headers})
+  }
 
   deleteObject(object_id){ //delete object and all of it's data as well as connection to user
     this.http.delete(`https://api.tomtom.com/locationHistory/1/objects/${object_id}?key=${API_KEY}&adminKey=${ADMIN_KEY}`)
@@ -99,15 +100,16 @@ export class MapService {
 
   }
 
-  getLocationHistory(object_id){ //gets the location history for 2 weeks for user
-    return this.http.get(`https://api.tomtom.com/locationHistory/1/history/positions/${object_id}?key=${API_KEY}&from=2020-07-16T01:00:00&to=2020-07-16T01:00:00`);
+  getLocationHistory(object_id,previous, current){ //gets the location history for 2 weeks for user
+    return this.http.get(`https://api.tomtom.com/locationHistory/1/history/positions/${object_id}?key=${API_KEY}&from${previous}=&to=${current}`);
   }
 
-  getFenceHeadCount(fence_id){ // gets a headcount of how many objects are in the fence
+  getFenceHeadCount(fence_id,previous,current){ // gets a headcount of how many objects are in the fence
     var sum = 0;
     var transList;
+    var time;
     var population: Array<any>= [];
-    return this.getFenceTransitions(fence_id).pipe(map((res: Response) =>{
+    return this.getFenceTransitions(fence_id, previous,current).pipe(map((res: Response) =>{
       transList = res
       transList.transitions.features.map(item =>{
         population.push(item.transitionType)
@@ -121,8 +123,9 @@ export class MapService {
           sub++;
         }}
        sum = add - sub
+       time = item.recordedTransitionTime
       })
-      this.firestoreService.updateFence("valpo_fences", fence_id, sum)
+      this.firestoreService.updateFence("valpo_fences", fence_id,time, sum)
       return sum
     }))
 }
@@ -137,7 +140,7 @@ export class MapService {
   getFences(){
     return this.http.get(`https://api.tomtom.com/geofencing/1/projects/${PROJECT_ID}/fences?key=${API_KEY}`)
   }
-  getFenceTransitions(fence_id){
-    return this.http.get(`https://api.tomtom.com/geofencing/1/transitions/fences/${fence_id}?key=${API_KEY}&from=2020-07-16T00:00:00&to=2020-07-16T23:59:59`)
+  getFenceTransitions(fence_id, previous, current){
+    return this.http.get(`https://api.tomtom.com/geofencing/1/transitions/fences/${fence_id}?key=${API_KEY}&from${previous}=&to=${current}`)
   }
 }

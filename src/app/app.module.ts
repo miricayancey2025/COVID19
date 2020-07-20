@@ -20,7 +20,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore'
 import { LocationTrackerService } from './providers/location-tracker.service';
 import { BackgroundGeolocation } from '@ionic-native/background-geolocation/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { LocalNotifications} from '@ionic-native/local-notifications/ngx'
+
 
 
 // environment
@@ -45,7 +45,7 @@ import { environment } from '../environments/environment';
     })
   ],
   declarations: [AppComponent],
-  providers: [InAppBrowser, SplashScreen, StatusBar, AngularFirestoreModule, LocationTrackerService,BackgroundGeolocation, Geolocation, LocalNotifications],
+  providers: [InAppBrowser, SplashScreen, StatusBar, AngularFirestoreModule, LocationTrackerService,BackgroundGeolocation, Geolocation],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

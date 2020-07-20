@@ -5,10 +5,7 @@ import { LocationTrackerService} from '../../providers/location-tracker.service'
 import { DatePipe } from '@angular/common';
 import { FirestoreService } from '../../services/firestore.service';
 import { AuthService } from '../../services/auth.service';
-import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
-import { AlertController } from '@ionic/angular';
-
-
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-maping',
@@ -19,19 +16,20 @@ import { AlertController } from '@ionic/angular';
 })
 export class MapingPage implements OnInit {
   data:any;
-  map: any;
+  marker: any;
   lat;long;
   timestamp;
   interval;
-  previous;
-  current; 
-  object_id ="29017b68-dc6f-431c-aaaa-09e81400d956"; //user's object string
   public objList;
   public fenceList;
-  timeLeft: number = 15
+  timeLeft: number = 30
   switch: number = 10
   today = new Date();
+  previous;
+  db = firebase.firestore();
+  current;  // supposed to be the last time fencelist was updated
   date =this.datePipe.transform(this.today, 'short');
+  object_id; //user's object string
   positions = [
     [-87.042634, 41.464394],  //Union    
     [-87.040241, 41.464114], //VUCA
@@ -39,59 +37,51 @@ export class MapingPage implements OnInit {
     [-87.041720, 41.463089], //Chapel
     [-87.041009, 41.461265], //Welcome Center
   ];
-  pos_names =[
-    "UNION",
-    "VUCA",
-    "LIBRARY",
-    "CHAPEL",
-    "WELCOME CENTER"
-  ]
-  userMarker: any;
-  clickSub: any;
+  pos_names = ["Union", "Vuca", "Library", "Chapel","Welcome Center"]
+  map: any;
   
-  constructor(private notifications: LocalNotifications,public alertController: AlertController, private firestoreService: FirestoreService,  private mapService : MapService,     public authService: AuthService, private datePipe: DatePipe, private loc : LocationTrackerService) { }
+  constructor(private firestoreService: FirestoreService,  private mapService : MapService,     public authService: AuthService, private datePipe: DatePipe, private loc : LocationTrackerService) { }
 
-  // simpleNotif() {
-  //   this.notifications.schedule({
-  //     id: 1,
-  //     text: 'Single Local Notification',
-  //   });
-  // }
-  
-  async presentAlert() {
-    const alert = await this.alertController.create({
-      header: 'You Have Entered a Hotspot!',
-      message: 'Proceed with caution and please wear a mask! You will come in contact with a lot of people!',
-      buttons: ['OK']
-    });
-    await alert.present();
-  }
 
-  move() { //sets a timer that automatically updates fence transitions
+  checkFence(fences) { //sets a timer that automatically updates fence transitions
     this.interval = setInterval(() => {
       if(this.timeLeft > 0) {
         this.timeLeft--;
       } else {
-        this.movePositions()
-        this.timeLeft = 15;
+        //console.log(fences)
+        //this.movePositions()
+
+        //Gets Current Time and Time from 10 minutes ago
+        var d_1 = new Date()
+        this.current = d_1.toISOString().substring(0, d_1.toISOString().length - 5)
+        var d_2 = new Date()
+        d_2.setMinutes(d_2.getMinutes() -10)
+        this.previous= d_2.toISOString().substring(0, d_2.toISOString().length - 5)
+
+        console.log(this.previous, this.current)
+        fences.forEach(element => {
+          element.forEach(f => {
+              this.mapService.getFenceHeadCount(f.fence_id, this.previous, this.current).subscribe(data =>{
+                console.log("Successful Fence Update!")
+              })});});
+        this.timeLeft = 30;
       }},1000)}
 
-  getCount(){ //gets initial fence headcount
+  getCount(fences){ //gets initial fence headcount
     //Gets Current Time and Time from 10 minutes ago
     var d_1 = new Date()
     this.current = d_1.toISOString().substring(0, d_1.toISOString().length - 5)
     var d_2 = new Date()
     d_2.setMinutes(d_2.getMinutes() -10)
     this.previous= d_2.toISOString().substring(0, d_2.toISOString().length - 5)
-    var list
-    this.mapService.getFences().subscribe(data =>{
-      list = data
-      list = list.fences
-      //console.log(list)
-      for(var x = 0; x < list.length; x++){
-        this.mapService.getFenceHeadCount(list[x].id, this.previous, this.current).subscribe(data =>{
-          console.log("Successful Fence Update!")
-        })}})}
+
+    console.log(this.previous, this.current)
+    fences.forEach(element => {
+      element.forEach(f => {
+          this.mapService.getFenceHeadCount(f.fence_id, this.previous, this.current).subscribe(data =>{
+            console.log("Successful Fence Update!")
+          })});});
+    }
     
 
   getObjects() { //gets all the objects from the mapService
@@ -100,14 +90,19 @@ export class MapingPage implements OnInit {
           this.objList = obj;
            this.objList = Object.keys(this.objList).map(it => this.objList[it])
            this.objList = this.objList[0]
-           //console.log(this.objList)
+           console.log(this.objList)
            resolve()
           })})}
+
 
   movePositions(){ //gets all objects and calls a random position change
         this.getObjects().then(() =>{
         this.mapService.changePositions(this.objList, this.positions)
       })}
+
+  pauseTimer() {
+    clearInterval(this.interval);
+  }
 
   setPosition(){ //sets object position for locationHistory service
     this.mapService.setObjectPosition(this.object_id, this.long,this.lat).subscribe(data =>{
@@ -119,23 +114,22 @@ export class MapingPage implements OnInit {
       console.log('Tried Report')
     })}
 
-  checkIn(){
-    this.setPosition()
-    this.reportObj()
+  deleteObj(obj){
+    this.mapService.deleteObject(obj)
   }
 
   colorExposure(){ //Colors the Cards according to Exposure Risk Level
     //Doesn't autoload, have to click somewhere on page to color code
-    //Low population threshold set for demo
       var classList = document.getElementsByClassName("card")
+      console.log(classList)
       for(var x = 0; x <classList.length; x++){
         var childs = (classList[x].childNodes)[0].childNodes
         var num : number =+(childs[1].textContent.split(" "))[2]
-        if(num > 100 && num < 300){
+        if(num > 2 && num < 4){
           classList[x].setAttribute("style", "background-color: orange")
           childs[2].textContent = "Exposure Risk: Orange"}
 
-        else if(num >= 300){
+        else if(num >= 4){
           classList[x].setAttribute("style", "background-color: red")
           childs[2].textContent = "Exposure Risk: Red"}
 
@@ -143,12 +137,17 @@ export class MapingPage implements OnInit {
           classList[x].setAttribute("style", "background-color: green")
           childs[2].textContent = "Exposure Risk: Green"}
 }}
+
   ngOnInit() {
-    // this.long =  this.loc.lng;
-    // this.lat = this.loc.lat;
+    this.long =  this.loc.lng;
+    this.lat = this.loc.lat;
     this.fenceList = this.firestoreService.getAllFences("valpo_fences").valueChanges()
-    this.getCount()
-   // this.move()
+    // var documentReference = this.db.collection('users').doc(this.authService.getUserId());
+    // this.object_id = documentReference.get().then(result =>{
+    //   this.object_id = result.data().object_id
+    //   console.log(this.object_id)
+    // })
+
 
     
      this.mapService.getObjectLastPosition("29017b68-dc6f-431c-aaaa-09e81400d956").subscribe(dat => {
@@ -163,8 +162,18 @@ export class MapingPage implements OnInit {
     // })
     //  console.log(coordinates)
 
+
+    //this.getCount(this.fenceList)
+    //this.checkFence(this.fenceList)  
+    //  this.mapService.getObjectLastPosition("29017b68-dc6f-431c-aaaa-09e81400d956").subscribe(dat => {
+    //      // console.log(dat);
+    //       this.data = dat;
+    //       this.timestamp  = this.datePipe.transform(this.data.objectState.timestamp, 'short');
+    //  });
+    //xhSLlv6eLXVggB5hbMeTK87voMmu2LV3
+    const cent = new tt.LngLat(-87.044285,41.462802);
     var center = [ -87.041201, 41.463325]
-    this.map = tt.map({
+    const map = tt.map({
       
       key: 'xhSLlv6eLXVggB5hbMeTK87voMmu2LV3',
       
@@ -172,8 +181,7 @@ export class MapingPage implements OnInit {
       
       style: 'tomtom://vector/1/basic-main',
       center: center,
-      zoom: 15,
-      minZoom: 15,
+        zoom: 15
       
     });
     for(var x=0; x < this.positions.length; x++){

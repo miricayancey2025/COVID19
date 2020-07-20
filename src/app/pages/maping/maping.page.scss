@@ -1,26 +1,11 @@
 @import "@tomtom-international/web-sdk-maps";     
 #map {
       
-    height: 50vh;
+    height: 400px;
       
     width: 100%;
-      }
-
       
- #check{
-     background-color: lightblue;
-     border-radius: 15px;
-     width:40%;
-     height:50px;
-     border-color:lightblue;
-     margin-left: 7%;
-     margin-bottom: 5%;
-     font-size: 20px;
- }  
- #name{
-     text-align: center;
- }   
-.header{
+}.header{
     text-align: center;
     color: rgb(146, 184, 197);
     border-bottom-style: solid;
@@ -28,7 +13,7 @@
     border-width: 2px;
     width: 55%;
     margin-left:22%;
-    margin-top: 10%;
+    margin-top: 5%;
 
 }
   .fence_name{
@@ -55,7 +40,7 @@
     border-radius: 10px;
     margin-bottom: 5%;
     background-color: snow;
-    height: 22%;
+    height: 20%;
     margin-top: 0;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 

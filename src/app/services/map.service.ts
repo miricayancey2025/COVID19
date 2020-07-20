@@ -87,9 +87,18 @@ export class MapService {
   deleteObject(object_id){ //delete object and all of it's data as well as connection to user
     this.http.delete(`https://api.tomtom.com/locationHistory/1/objects/${object_id}?key=${API_KEY}&adminKey=${ADMIN_KEY}`)
   }
+
+  checkObjectAge(){ // check age of object. Objects are deleted after 14 days
+
+  }
+
   getObjectLastPosition(object_id){ //gets the last known position of user
     return this.http.get(`https://api.tomtom.com/locationHistory/1/history/position/${object_id}?key=${API_KEY}`);
   }
+  getObjectPositionAt(object_id, time){ // gets an objects position at this time
+
+  }
+
   getLocationHistory(object_id,previous, current){ //gets the location history for 2 weeks for user
     return this.http.get(`https://api.tomtom.com/locationHistory/1/history/positions/${object_id}?key=${API_KEY}&from${previous}=&to=${current}`);
   }
@@ -112,25 +121,25 @@ export class MapService {
         else if (population[x] == "EXIT"){
           sub++;
         }}
-       //adds a randomized factor for demo uses only
-       var rando = Math.floor(Math.random()* Math.floor(50))
-       add = add*rando
        sum = add - sub
-       if(sum < 0){
-         sum = sum + 100
-       }
-       /////////////////////////////////////////
-
        time = item.recordedTransitionTime
       })
-      this.firestoreService.updateFence("valpo_fences", fence_id,current, sum)
+      this.firestoreService.updateFence("valpo_fences", fence_id,time, sum)
       return sum
     }))
 }
+
+  updateCount(){ //Updates the population count for the fences
+
+  }
+  checkExposure(){ // checks if two objects were inside fence at same time
+
+  }
+
   getFences(){
     return this.http.get(`https://api.tomtom.com/geofencing/1/projects/${PROJECT_ID}/fences?key=${API_KEY}`)
   }
   getFenceTransitions(fence_id, previous, current){
-    return this.http.get(`https://api.tomtom.com/geofencing/1/transitions/fences/${fence_id}?key=${API_KEY}&from=${previous}&to=${current}`)
+    return this.http.get(`https://api.tomtom.com/geofencing/1/transitions/fences/${fence_id}?key=${API_KEY}&from${previous}=&to=${current}`)
   }
 }

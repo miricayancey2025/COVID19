@@ -1,19 +1,29 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs-page';
+import { SchedulePage } from '../schedule/schedule';
 
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'tabs',
     component: TabsPage,
     children: [
       {
-        path: 'announcements',
+        path: 'schedule',
         children: [
           {
             path: '',
-            loadChildren: () => import('../announcements/announcements.module').then(m => m.AnnouncementsPageModule)
+            component: SchedulePage,
+          },
+        ]
+      },
+      {
+        path: 'map',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../map/map.module').then(m => m.MapModule)
           }
         ]
       },
@@ -27,6 +37,15 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'announcements',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../announcements/announcements.module').then(m => m.AnnouncementsPageModule)
+          }
+        ]
+      },
+      {
         path: 'symptoms',
         children: [
           {
@@ -35,27 +54,13 @@ const routes: Routes = [
           }
         ]
       },
-      {
-        path: 'support',
-        children: [
-          {
-            path: '',
-            loadChildren: () => import('../support/support.module').then(m => m.SupportModule)
-          }
-        ]
-      },
       
       {
         path: '',
-        redirectTo: 'maping',
+        redirectTo: '/app/tabs/schedule',
         pathMatch: 'full'
       }
     ]
-  },
-  {
-    path: '',
-    redirectTo: 'maping',
-    pathMatch: 'full'
   }
 ];
 

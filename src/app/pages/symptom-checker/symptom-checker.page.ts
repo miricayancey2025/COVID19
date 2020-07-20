@@ -24,10 +24,10 @@ export class SymptomCheckerPage implements OnInit {
   ];
 
   SIGNS_LIST = [
-    { name: 'Difficulty breathing or gasping for air', value: 'Difficulty breathing or gasping for air'},
+    { name: 'A hard time breathing / Gasping for air', value: 'A hard time breathing / Gasping for air'},
     { name: 'Continuous or severe chest pain', value: 'Continuous or severe chest pain'},
     { name: 'Fever worsens', value: 'Fever worsens'},
-    { name: 'Lightheaded (may faint or pass out)', value: 'Lightheaded (may faint or pass out)'},
+    { name: 'Lightheaded (you may pass out or faint)', value: 'Lightheaded (you may pass out or faint)'},
   ];
 
   constructor(private formBuilder: FormBuilder) {

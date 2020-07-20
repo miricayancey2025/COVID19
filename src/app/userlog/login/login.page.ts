@@ -20,8 +20,6 @@ export class LoginPage implements OnInit {
   email = '';
   password = '';
   db = firebase.firestore();
-  
-
 
   constructor(
     private mapService : MapService,
@@ -41,6 +39,7 @@ export class LoginPage implements OnInit {
     setFences(val){
       this.dataService.fenceList = val
     }
+fences;
   ngOnInit() {
   }
 
@@ -65,7 +64,7 @@ export class LoginPage implements OnInit {
 
           let self = this;
           var documentReference = this.db.collection('users').doc(this.authService.getUserId());
-          
+         
           documentReference.get().then(function(documentSnapshot) {
                                     if (documentSnapshot.exists) {
 
@@ -82,16 +81,15 @@ export class LoginPage implements OnInit {
                                       // else if(documentSnapshot.data().userType == "Client"){
                                         // self.setClient(documentSnapshot.data().userUID)
                                         self.locationTracker.startTracking();
-                                        self.router.navigateByUrl('app');
+                                        self.router.navigateByUrl('/maping');
                                         self.authService.setLocalPersist();
-
-                                        // // self.mapService.getFences().subscribe(fence =>{
-                                        // //   // self.fences = fence;
-                                        // //   // self.fences = Object.keys(self.fences).map(it => self.fences[it])
-                                        // //   // self.fences = self.fences[0]
-                                        // //   // self.setFences(self.fences)
+                                        self.mapService.getFences().subscribe(fence =>{
+                                          self.fences = fence;
+                                          self.fences = Object.keys(self.fences).map(it => self.fences[it])
+                                          self.fences = self.fences[0]
+                                          self.setFences(self.fences)
                                    
-                                        // })
+                                        })
 
       
                                       /* }

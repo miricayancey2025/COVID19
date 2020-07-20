@@ -9,13 +9,35 @@
           </ion-list-header>
           <ion-menu-toggle autoHide="false" *ngFor="let p of appPages; let i = index">
             <ion-item [routerLink]="p.url" routerLinkActive="selected" routerDirection="root" detail="false">
-              <ion-icon slot="start" [name]="p.icon"></ion-icon>
+              <ion-icon slot="start" [name]="p.icon + '-outline'"></ion-icon>
               <ion-label>
                 {{p.title}}
               </ion-label>
             </ion-item>
 
           </ion-menu-toggle>
+        </ion-list>
+
+        <ion-list *ngIf="!loggedIn" lines="none">
+          <ion-list-header>
+            Important
+          </ion-list-header>
+
+          <ion-menu-toggle autoHide="false">
+            <ion-item routerLink="/symptom-checker" routerLinkActive="active" routerDirection="root" detail="false">
+              <ion-icon slot="start" name="checkmark-outline"></ion-icon>
+              <ion-label>
+                Symptoms Checker
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <ion-menu-toggle autoHide="false">
+            <ion-item>
+              <ion-icon slot="start" name="notifications-outline"></ion-icon>
+              <ion-label>Notification</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
         </ion-list>
 
         <ion-list *ngIf="!loggedIn" lines="none">

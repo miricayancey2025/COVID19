@@ -45,13 +45,13 @@ h1{
       margin-left: 3%;
       margin-right: 3%;
       margin-bottom:30px;
+      border-bottom-style: solid;
+      border-top-style: solid;
+      border-color: lightblue;
       padding-top: 2%;
       border-width: 3px;
       padding-bottom:3%;
-      border-radius: 10px;
-      background-color: snow;
-      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-
+      background-color: rgb(245, 254, 255);
   }
 
 
@@ -60,11 +60,10 @@ h1{
   .img_background{
     display: block;
     background-color: lightblue;
-    width:40%;
+    width:49%;
     float:left;
-    height: 65%;
-    margin-top:8%;
-    margin-left: 5%;
+    height: 98%;
+    margin-top:2%;
   }
 
   .image{
@@ -87,13 +86,13 @@ h1{
 
 }
   .content{  //Container for Title, Description and Source
-    width: 50%;
+    width: 48%;
     float:right;
     padding:0;
     margin:0;
     height: 100%;
-    padding-right: 3%;
-    margin-top:5%;
+    margin-right: 2%;
+    margin-top:2%;
     position: relative;
     
   }
@@ -101,7 +100,7 @@ h1{
 .title{
     overflow:hidden;
     text-overflow:ellipsis;
-    font-size: 15px;   
+    font-size: 13px;   
     border-bottom-style: solid;
     border-top-style: solid;
     border-color: lightblue;
@@ -119,20 +118,20 @@ h1{
     margin-top:4%;
     text-overflow:ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 4; /* number of lines to show */
+    -webkit-line-clamp: 3; /* number of lines to show */
     -webkit-box-orient: vertical;
-    font-size: 14px;
+    font-size: 12px;
 
 }
-// .source{
-//     overflow:hidden;
-//     text-overflow:ellipsis;
-//     display: -webkit-box;
-//     -webkit-line-clamp: 2; /* number of lines to show */
-//     -webkit-box-orient: vertical;
-//     font-size: 12px;
-//     margin-top: 3%;
-//     width:100%;
-//     position: absolute;
-//     bottom:15%;
-// }
+.source{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* number of lines to show */
+    -webkit-box-orient: vertical;
+    font-size: 12px;
+    margin-top: 3%;
+    width:100%;
+    position: absolute;
+    bottom:2%;
+}

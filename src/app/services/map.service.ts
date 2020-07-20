@@ -3,10 +3,10 @@ import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http'
 import { map } from 'rxjs/operators';
 import { FirestoreService } from './firestore.service';
-const API_URL = 'https://api.tomtom.com';
-const API_KEY = 'xhSLlv6eLXVggB5hbMeTK87voMmu2LV3'
-const PROJECT_ID = 'c669e2a6-bb95-4986-8341-b8f4312adb51';
-const ADMIN_KEY = '2dhUQXB09HvX7UlNWZ8M41NHyGwIiV5mGcmGFPQ0TvWcvUkJ'
+const API_URL = environment.map_apiUrl;
+const API_KEY = environment.map_apiKey;
+const PROJECT_ID = environment.map_projectID;
+const ADMIN_KEY = environment.map_adminKey
 
 @Injectable({
   providedIn: 'root'
@@ -99,16 +99,15 @@ export class MapService {
 
   }
 
-  getLocationHistory(object_id,previous, current){ //gets the location history for 2 weeks for user
-    return this.http.get(`https://api.tomtom.com/locationHistory/1/history/positions/${object_id}?key=${API_KEY}&from${previous}=&to=${current}`);
+  getLocationHistory(object_id){ //gets the location history for 2 weeks for user
+    return this.http.get(`https://api.tomtom.com/locationHistory/1/history/positions/${object_id}?key=${API_KEY}&from=2020-07-16T01:00:00&to=2020-07-16T01:00:00`);
   }
 
-  getFenceHeadCount(fence_id,previous,current){ // gets a headcount of how many objects are in the fence
+  getFenceHeadCount(fence_id){ // gets a headcount of how many objects are in the fence
     var sum = 0;
     var transList;
-    var time;
     var population: Array<any>= [];
-    return this.getFenceTransitions(fence_id, previous,current).pipe(map((res: Response) =>{
+    return this.getFenceTransitions(fence_id).pipe(map((res: Response) =>{
       transList = res
       transList.transitions.features.map(item =>{
         population.push(item.transitionType)
@@ -122,9 +121,8 @@ export class MapService {
           sub++;
         }}
        sum = add - sub
-       time = item.recordedTransitionTime
       })
-      this.firestoreService.updateFence("valpo_fences", fence_id,time, sum)
+      this.firestoreService.updateFence("valpo_fences", fence_id, sum)
       return sum
     }))
 }
@@ -139,7 +137,7 @@ export class MapService {
   getFences(){
     return this.http.get(`https://api.tomtom.com/geofencing/1/projects/${PROJECT_ID}/fences?key=${API_KEY}`)
   }
-  getFenceTransitions(fence_id, previous, current){
-    return this.http.get(`https://api.tomtom.com/geofencing/1/transitions/fences/${fence_id}?key=${API_KEY}&from${previous}=&to=${current}`)
+  getFenceTransitions(fence_id){
+    return this.http.get(`https://api.tomtom.com/geofencing/1/transitions/fences/${fence_id}?key=${API_KEY}&from=2020-07-16T00:00:00&to=2020-07-16T23:59:59`)
   }
 }

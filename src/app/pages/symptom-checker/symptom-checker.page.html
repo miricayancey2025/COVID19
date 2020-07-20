@@ -18,7 +18,7 @@
   <ion-item lines="none" class="question">1. Have you had close contact with someone diagnosed with COVID-19 or been notified that you have been exposed to it?</ion-item>
   <form [formGroup]="ionicForm" (ngSubmit)="submitForm()">
     <ion-list>
-      <ion-item lines="none">
+      <!-- <ion-item lines="none">
         <ion-label>No</ion-label>
         <ion-checkbox>
         </ion-checkbox>
@@ -27,7 +27,17 @@
         <ion-label>Yes</ion-label>
         <ion-checkbox>
         </ion-checkbox>
-      </ion-item>
+      </ion-item> -->
+      <ion-radio-group>
+        <ion-item>
+          <ion-label>Yes</ion-label>
+          <ion-radio></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>No</ion-label>
+          <ion-radio></ion-radio>
+        </ion-item>
+      </ion-radio-group>
     </ion-list>
   </form>
 

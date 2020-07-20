@@ -57,6 +57,7 @@
     "dateformat": "^3.0.3",
     "firebase": "^7.15.5",
     "newsapi": "^2.4.0",
+    "nodemon": "^2.0.4",
     "rxjs": "^6.5.5",
     "sw-toolbox": "3.6.0",
     "tslib": "^1.13.0",

@@ -9,10 +9,14 @@
 
 <ion-content fullscreen="true" (click)="colorExposure()">
   <div class="header">  
-    <h1>Check</h1>
+    <!-- <h1>Map</h1> -->
+    <p>Last Pin: {{timestamp}}</p>
   </div>
   <br>
+  <button (click)="getCount()" id="check">Refresh</button>
+  <button (click)="checkIn()" id="check">Check In</button>
   <div id="map"></div>
+  <button (click) = "presentAlert()">Notify</button>
   <br>
     <div  class="card" *ngFor="let fence of fenceList | async">
         <div id="content">
@@ -21,12 +25,4 @@
        <p class="exposure"> Exposure Risk: </p>
       </div>
   </div>
-    <button (click)="movePositions()">Move</button>
-    <button (click)="setPosition()">Set Position</button>
-    <button (click)="reportObj()">Report</button>
-    <button (click)="createObj()">Add Object</button>
-    <button (click)="deleteObj(data?.summary.id)">Delete Object</button>
-    <p>{{timeLeft}} Seconds Left....     {{switch}} Switching in...</p> 
-
-
 </ion-content>

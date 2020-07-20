@@ -53,7 +53,7 @@ const routes: Routes = [
     path: 'maping',
     loadChildren: () => import('./pages/maping/maping.module').then( m => m.MapingPageModule)
   }
-
+ 
  
 ];
 

@@ -12,6 +12,8 @@ export class SymptomCheckerPage implements OnInit {
 
   isFormSubmitted = false;
 
+  IN_CONTACT = false;
+
   SYMPTOMS_LIST = [
     { name: 'Fever/Chills', value: 'Fever/Chills'},
     { name: 'Coughing', value: 'Coughing' },

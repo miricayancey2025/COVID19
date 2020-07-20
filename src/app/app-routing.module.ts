@@ -46,12 +46,18 @@ const routes: Routes = [
     loadChildren: () => import('./pages/announcements/announcements.module').then( m => m.AnnouncementsPageModule)
   },
   {
+<<<<<<< HEAD
     path: 'support',
     loadChildren: () => import('./pages/support/support.module').then( m => m.SupportModule)
+=======
+    path: 'map',
+    loadChildren: () => import('./pages/map/map.module').then( m => m.MapModule)
+>>>>>>> 34de933f243ab557fdb2b5bccc42365640f072c0
   },
   {
     path: 'maping',
     loadChildren: () => import('./pages/maping/maping.module').then( m => m.MapingPageModule)
+
   }
 
  

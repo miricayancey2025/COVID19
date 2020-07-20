@@ -3,17 +3,17 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Coronavirus Symptom Checker</ion-title>
   </ion-toolbar>
 </ion-header>
 
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Symptom Checker</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="header">  
+    <h1>Symptom Checker</h1>
+  </div>  
+
+  <br>
+  <br>
   <!-- Question 1 -->
   <ion-item lines="none" class="question">1. Have you had close contact with someone diagnosed with COVID-19 or been notified that you have been exposed to it?</ion-item>
   <form [formGroup]="ionicForm" (ngSubmit)="submitForm()">
@@ -54,9 +54,9 @@
         (ionChange)="onSelectionChangeSign($event,i)">
         </ion-checkbox>
       </ion-item>
-      <ion-item lines="none" class="center">
+      <div lines="none" class="center">
         <ion-button size="default" class="center" type="submit">Submit</ion-button>
-      </ion-item>
+      </div>
     </ion-list>
   </form>
 

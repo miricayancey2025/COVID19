@@ -4,12 +4,6 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 export const environment = {
   production: false,
-  news_apiUrl: 'http://newsapi.org/v2',
-  news_apiKey: '3dc14bae5256481a8836948584b8a9fa',
-  map_apiKey: 'xhSLlv6eLXVggB5hbMeTK87voMmu2LV3',
-  map_adminKey: '2dhUQXB09HvX7UlNWZ8M41NHyGwIiV5mGcmGFPQ0TvWcvUkJ',
-  map_projectID: 'c669e2a6-bb95-4986-8341-b8f4312adb51',
-  map_apiUrl: 'https://api.tomtom.com',
   firebaseConfig : {
     apiKey: "AIzaSyA5wtUfH6F5rxpIu0peQFmiYZZdSF18T50",
     authDomain: "go-vid.firebaseapp.com",

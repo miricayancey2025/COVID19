@@ -35,6 +35,15 @@ const routes: Routes = [
           }
         ]
       },
+      {
+        path: 'support',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../support/support.module').then(m => m.SupportModule)
+          }
+        ]
+      },
       
       {
         path: '',

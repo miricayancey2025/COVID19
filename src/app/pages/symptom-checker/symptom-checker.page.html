@@ -6,7 +6,6 @@
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content [fullscreen]="true">
   <div class="header">  
     <h1>Symptom Checker</h1>
@@ -21,11 +20,11 @@
       <ion-radio-group>
         <ion-item>
           <ion-label>Yes</ion-label>
-          <ion-radio></ion-radio>
+          <ion-radio (click)="is_in_contact()"></ion-radio>
         </ion-item>
         <ion-item>
           <ion-label>No</ion-label>
-          <ion-radio></ion-radio>
+          <ion-radio (click)="is_not_in_contact()"></ion-radio>
         </ion-item>
       </ion-radio-group>
     </ion-list>
@@ -54,9 +53,14 @@
         (ionChange)="onSelectionChangeSign($event,i)">
         </ion-checkbox>
       </ion-item>
+      <!-- {{ if this.is_in_contact }} -->
       <div lines="none" class="center">
         <ion-button color="primary" size="default" class="center" type="submit">Submit</ion-button>
       </div>
+      <!-- {{ else }}
+      <div lines="none" class="center">
+        <ion-button color="primary" size="default" class="center" type="submit" routerLink="/app/negative">Submit</ion-button>
+      </div> -->
     </ion-list>
   </form>
 

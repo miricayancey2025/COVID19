@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-symptom-checker',
@@ -30,15 +32,24 @@ export class SymptomCheckerPage implements OnInit {
     { name: 'Continuous or severe chest pain', value: 'Continuous or severe chest pain'},
     { name: 'Fever worsens', value: 'Fever worsens'},
     { name: 'Lightheaded (may faint or pass out)', value: 'Lightheaded (may faint or pass out)'},
+    { name: 'None of the above', value: 'None of the above' },
   ];
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private iab: InAppBrowser, private router: Router) {
     this.ionicForm = this.formBuilder.group({
       Symptom_ArrayList: this.formBuilder.array([], [Validators.required]),
       Sign_ArrayList: this.formBuilder.array([], [Validators.required])
     });
 
     this.onLoadCheckboxStatus();
+  }
+
+  is_in_contact() {
+    this.IN_CONTACT = true;
+  }
+
+  is_not_in_contact() {
+    this.IN_CONTACT = false;
   }
 
   updateCheckControl(cal, o) {
@@ -83,6 +94,18 @@ export class SymptomCheckerPage implements OnInit {
 
   submitForm() {
     this.isFormSubmitted = true;
+    if(this.IN_CONTACT && this.SYMPTOMS_LIST.length > 1 && this.SIGNS_LIST.length > 1){
+      this.router.navigate(["/app/positive"]);
+      console.log("This student has been in contacted with a COVID patient");
+    }
+    // else if(!this.IN_CONTACT && this.ionicForm.Symptom_ArrayList[0] === 'None of the above'){
+    //   this.router.navigate(["/app/positive"]);
+    // }
+    else{
+      this.router.navigate(["/app/negative"]);
+      console.log("Not in contact");
+      
+    }
     if (!this.ionicForm.valid) {
       console.log('Please provide all the required values!')
       return false;

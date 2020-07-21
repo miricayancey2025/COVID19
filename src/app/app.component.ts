@@ -40,6 +40,16 @@ export class AppComponent implements OnInit {
       url: '/app/support',
       icon: 'alert-circle-outline'
     },
+    // {
+    //   title: 'Positive',
+    //   url: '/app/positive',
+    //   icon: 'checkmark-outline'
+    // },
+    // {
+    //   title: 'Negative',
+    //   url: '/app/negative',
+    //   icon: 'close-outline'
+    // },
   ];
   loggedIn = false;
   dark = false;

@@ -8,6 +8,8 @@ import { AuthService } from '../../services/auth.service';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { AlertController } from '@ionic/angular';
 
+
+
 @Component({
   selector: 'app-maping',
   templateUrl: './maping.page.html',
@@ -27,6 +29,7 @@ export class MapingPage implements OnInit {
   public objList;
   public fenceList;
   timeLeft: number = 15
+  switch: number = 10
   today = new Date();
   date =this.datePipe.transform(this.today, 'short');
   positions = [
@@ -43,6 +46,8 @@ export class MapingPage implements OnInit {
     "CHAPEL",
     "WELCOME CENTER"
   ]
+  userMarker: any;
+  clickSub: any;
   
   constructor(private notifications: LocalNotifications,public alertController: AlertController, private firestoreService: FirestoreService,  private mapService : MapService,     public authService: AuthService, private datePipe: DatePipe, private loc : LocationTrackerService) { }
 
@@ -52,7 +57,7 @@ export class MapingPage implements OnInit {
   //     text: 'Single Local Notification',
   //   });
   // }
-
+  
   async presentAlert() {
     const alert = await this.alertController.create({
       header: 'You Have Entered a Hotspot!',
@@ -142,32 +147,36 @@ export class MapingPage implements OnInit {
     // this.long =  this.loc.lng;
     // this.lat = this.loc.lat;
     this.fenceList = this.firestoreService.getAllFences("valpo_fences").valueChanges()
-    this.getCount()
-   // this.move()
+  
+    //OVER THE API REQUEST LIMIT FOR THE DAY 2,500 TOTAL
+    //Need to make a note for the user if we're over the total that it'll update tomorrow
+    //Need to not use the app on the day of delivery
 
-    
-     this.mapService.getObjectLastPosition("29017b68-dc6f-431c-aaaa-09e81400d956").subscribe(dat => {
-          this.data = dat;
-          var coordinates = this.data.objectState.geometry.coordinates
-          this.timestamp  = this.datePipe.transform(this.data.objectState.timestamp, 'short');
-     });
 
-     //Map Set Up
-    var center = [ -87.041201, 41.463325]
-    this.map = tt.map({
+    //this.getCount(this.fenceList)
+    //this.startTimer(this.fenceList)  
+    //  this.mapService.getObjectLastPosition("29017b68-dc6f-431c-aaaa-09e81400d956").subscribe(dat => {
+    //      // console.log(dat);
+    //       this.data = dat;
+    //       this.timestamp  = this.datePipe.transform(this.data.objectState.timestamp, 'short');
+    //  });
+    const center = [-87.044285,41.462802];
+    const map = tt.map({
+      
       key: 'xhSLlv6eLXVggB5hbMeTK87voMmu2LV3',
+      
       container: 'map',
+      
       style: 'tomtom://vector/1/basic-main',
       center: center,
       zoom: 15,
       minZoom: 15,
+      
     });
-
-    ///Set Up Markers
     for(var x=0; x < this.positions.length; x++){
       var marker = new tt.Marker().setLngLat(this.positions[x]).setPopup(new tt.Popup({offset: 30}).setText(this.pos_names[x]))
       marker.addTo(this.map)
-        }
+ }
     const el = document.createElement('div');
     el.innerHTML = "<img src='assets/img/user.png' style='width: 45px; height: 45px; border-radius: 15px;'>";
     var userMarker =  new tt.Marker({element: el, draggable: true}).setLngLat(center).setPopup(new tt.Popup({offset: 30}).setText("Drag to Check in")).addTo(this.map)
@@ -176,7 +185,13 @@ export class MapingPage implements OnInit {
     userMarker.on('dragend',function(){
       var lngLat = userMarker.getLngLat();
       console.log(lngLat)
+      //lngLat = new tt.LngLat(roundLatLng(lngLat.lng), roundLatLng(lngLat.lat));
+      // userMarker.setPopup(new tt.Popup({offset: 30}).setText(lngLat.toString()))
+      // userMarker.togglePopup();
       this.long = lngLat.lng
       this.lat = lngLat.lat
         });
+
+    
+
  }}

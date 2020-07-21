@@ -53,6 +53,10 @@ export class MapService {
     return this.http.post(`https://api.tomtom.com/locationHistory/1/history/positions?key=${API_KEY}`, body,{'headers':headers})
   }
 
+  getObjectReport(object_id, long, lat){
+   return this.http.get(`https://api.tomtom.com/geofencing/1/report/${PROJECT_ID}?key=${API_KEY}&point=${long},${lat},0&object=${object_id}&range=10`)
+  }
+
   postObjectReport(object_id, long, lat){ // sets the user position for query against fence transitions (entered building or not)
     var data = `{
       "type": "Feature",
@@ -112,7 +116,7 @@ export class MapService {
           sub++;
         }}
        //adds a randomized factor for demo uses only
-       var rando = Math.floor(Math.random()* Math.floor(50))
+       var rando = Math.floor(Math.random()* Math.floor(75))
        add = add*rando
        sum = add - sub
        if(sum < 0){

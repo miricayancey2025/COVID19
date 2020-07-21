@@ -37,7 +37,10 @@ getAllFences(doc): AngularFirestoreCollection<any> {
   return this.firestore.collection(doc);
 }
 
-
+//gets the details of a particular document
+getDetail(doc:string, val: string): AngularFirestoreDocument<any>{
+  return this.firestore.collection(doc).doc(val);
+}
 
 
 
@@ -81,11 +84,6 @@ getOnly(collection : string, field: string, condition: string): AngularFirestore
 getMy(collection : string, field: string): AngularFirestoreCollection<any> {
   return this.firestore.collection(collection, ref => ref.where(field ,'==', this.userId));
 
-}
-
-//gets the details of a particular document
-getDetail(doc:string, val: string): AngularFirestoreDocument<any>{
-  return this.firestore.collection(doc).doc(val);
 }
 //gets all of ONE user's documents, not necessarily the logged in user
 getList(doc, useriiD): AngularFirestoreCollection<any> {

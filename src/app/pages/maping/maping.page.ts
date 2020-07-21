@@ -34,6 +34,7 @@ export class MapingPage implements OnInit {
   //list variables (object list pertains to the "student" objects and fence list pertains to the buildings)
   objList;
   fenceList;
+  fence_inside;
 
 
   //map variables
@@ -120,15 +121,31 @@ export class MapingPage implements OnInit {
       this.presentAlert("You have checked in!", "You have checked in! Remember to wear your mask :)")
       this.getCount()
       this.getLast()
+      this.hotspotDetection()
     }
+
+  hotspotDetection(){ //gets the current population of the fence the user is in gives orange or red warning
+    this.mapService.getObjectReport(this.object_id, this.long, this.lat).subscribe(data =>{
+      var ins: any = data
+      var id = ins.inside.features[0].id
+      this.firestoreService.getDetail("valpo_fences", id).valueChanges().subscribe(res =>{
+        this.fence_inside = res
+        console.log(this.fence_inside.name)
+        var pop = this.fence_inside.population
+        if(pop> 100 && pop < 300){
+          this.presentAlert("Caution!", "You are enterning an Orange Zone! Please take the proper precautions!")
+        }
+        else if(pop >= 300){
+          this.presentAlert("WARNING!", "You are enterning a hotspot! Please take the proper precautions!")
+        }})})}
+
 
     getLast(){ // get's the user's last known position
     var data;
       this.mapService.getObjectLastPosition("29017b68-dc6f-431c-aaaa-09e81400d956").subscribe(dat => {
         data = dat;
         this.timestamp  = this.datePipe.transform(data.objectState.timestamp, 'short');
-   });
-    }
+   });}
 
   colorExposure(){ //Colors the Cards according to Exposure Risk Level
       var classList = document.getElementsByClassName("card")
@@ -162,10 +179,9 @@ export class MapingPage implements OnInit {
 
     //Sets up preemptive fence + user values
     this.movePositions()
-    //this.getCount()
+    this.getCount()
     //this.move()
     this.getLast()
-
 
     //Creates Map, user marker, and the marker for the fences (buildings)
     var center = [ -87.041201, 41.463325]

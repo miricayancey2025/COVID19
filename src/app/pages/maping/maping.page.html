@@ -14,10 +14,9 @@
   </div>
   <br>
   <button (click)="getCount()" id="check">Refresh</button>
-  <button (click)="setPosition()" id="check">Check</button>
-  <button (click)="reportObj()" id="check">Report</button>
+  <button (click)="checkIn()" id="check">Check In</button>
   <div id="map"></div>
-  <!-- <button (click) = "presentAlert()">Notify</button> -->
+  <button (click) = "presentAlert()">Notify</button>
   <br>
     <div  class="card" *ngFor="let fence of fenceList | async">
         <div id="content">

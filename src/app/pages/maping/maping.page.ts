@@ -147,21 +147,24 @@ export class MapingPage implements OnInit {
     // this.long =  this.loc.lng;
     // this.lat = this.loc.lat;
     this.fenceList = this.firestoreService.getAllFences("valpo_fences").valueChanges()
-  
-    //OVER THE API REQUEST LIMIT FOR THE DAY 2,500 TOTAL
-    //Need to make a note for the user if we're over the total that it'll update tomorrow
-    //Need to not use the app on the day of delivery
+    this.getCount()
+   // this.move()
 
+    
+     this.mapService.getObjectLastPosition("29017b68-dc6f-431c-aaaa-09e81400d956").subscribe(dat => {
+          this.data = dat;
+          var coordinates = this.data.objectState.geometry.coordinates
+          this.timestamp  = this.datePipe.transform(this.data.objectState.timestamp, 'short');
+     });
 
-    //this.getCount(this.fenceList)
-    //this.startTimer(this.fenceList)  
-    //  this.mapService.getObjectLastPosition("29017b68-dc6f-431c-aaaa-09e81400d956").subscribe(dat => {
-    //      // console.log(dat);
-    //       this.data = dat;
-    //       this.timestamp  = this.datePipe.transform(this.data.objectState.timestamp, 'short');
-    //  });
-    const center = [-87.044285,41.462802];
-    const map = tt.map({
+     var coordinates;
+    this.getLast().then(data =>{
+      coordinates = data
+    })
+     console.log(coordinates)
+
+    var center = [ -87.041201, 41.463325]
+    this.map = tt.map({
       
       key: 'xhSLlv6eLXVggB5hbMeTK87voMmu2LV3',
       

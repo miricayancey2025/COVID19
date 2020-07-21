@@ -46,10 +46,9 @@ const routes: Routes = [
     loadChildren: () => import('./pages/announcements/announcements.module').then( m => m.AnnouncementsPageModule)
   },
   {
-    path: 'support',
-    loadChildren: () => import('./pages/support/support.module').then( m => m.SupportModule)
-  },
-  {
+    path: 'map',
+    loadChildren: () => import('./pages/map/map.module').then( m => m.MapModule)
+  },  {
     path: 'maping',
     loadChildren: () => import('./pages/maping/maping.module').then( m => m.MapingPageModule)
   }

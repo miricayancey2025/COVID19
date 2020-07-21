@@ -36,8 +36,8 @@ export class AppComponent implements OnInit {
       icon: 'checkmark-done-circle-outline'
     },
     {
-      title: 'Help',
-      url: '/app/support',
+      title: 'Map',
+      url: '/app/map',
       icon: 'alert-circle-outline'
     },
   ];

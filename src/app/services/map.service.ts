@@ -3,11 +3,9 @@ import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http'
 import { map } from 'rxjs/operators';
 import { FirestoreService } from './firestore.service';
-const API_URL = environment.map_apiUrl;
 const API_KEY = environment.map_apiKey;
 const PROJECT_ID = environment.map_projectID;
 const ADMIN_KEY = environment.map_adminKey
-var ISO_date = new Date().toISOString().substring(0, new Date().toISOString().length - 5)
 
 @Injectable({
   providedIn: 'root'
@@ -20,12 +18,12 @@ export class MapService {
     for(var x =0; x < objList.length; x++){
       var rando = Math.floor(Math.random()* Math.floor(num))
       if(objList[x].id != "29017b68-dc6f-431c-aaaa-09e81400d956"){
-        console.log(objList[x].id)
-        console.log(posList[rando][0], posList[rando][1])
+        // console.log(objList[x].id)
+        // console.log(posList[rando][0], posList[rando][1])
        this.setObjectPosition(objList[x].id,posList[rando][0], posList[rando][1]).subscribe(data =>{
          console.log("Position Set")
        })
-       console.log(posList[rando][0], posList[rando][1])
+      //  console.log(posList[rando][0], posList[rando][1])
         this.postObjectReport(objList[x].id,posList[rando][0], posList[rando][1]).subscribe(data =>{
           console.log("Position Posted")
          })

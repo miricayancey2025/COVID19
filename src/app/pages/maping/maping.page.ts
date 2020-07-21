@@ -20,7 +20,7 @@ import { AlertController } from '@ionic/angular';
 export class MapingPage implements OnInit {
   data:any;
   map: any;
-  lat;long;
+  lat = 0;long = 0;
   timestamp;
   interval;
   previous;
@@ -28,7 +28,7 @@ export class MapingPage implements OnInit {
   object_id ="29017b68-dc6f-431c-aaaa-09e81400d956"; //user's object string
   public objList;
   public fenceList;
-  timeLeft: number = 15
+  timeLeft: number = 30
   switch: number = 10
   today = new Date();
   date =this.datePipe.transform(this.today, 'short');
@@ -49,19 +49,12 @@ export class MapingPage implements OnInit {
   userMarker: any;
   clickSub: any;
   
-  constructor(private notifications: LocalNotifications,public alertController: AlertController, private firestoreService: FirestoreService,  private mapService : MapService,     public authService: AuthService, private datePipe: DatePipe, private loc : LocationTrackerService) { }
+  constructor(public alertController: AlertController, private firestoreService: FirestoreService,  private mapService : MapService,     public authService: AuthService, private datePipe: DatePipe, private loc : LocationTrackerService) { }
 
-  // simpleNotif() {
-  //   this.notifications.schedule({
-  //     id: 1,
-  //     text: 'Single Local Notification',
-  //   });
-  // }
-  
-  async presentAlert() {
+  async presentAlert(header, message) {
     const alert = await this.alertController.create({
-      header: 'You Have Entered a Hotspot!',
-      message: 'Proceed with caution and please wear a mask! You will come in contact with a lot of people!',
+      header: header,
+      message: message,
       buttons: ['OK']
     });
     await alert.present();
@@ -73,7 +66,7 @@ export class MapingPage implements OnInit {
         this.timeLeft--;
       } else {
         this.movePositions()
-        this.timeLeft = 15;
+        this.timeLeft = 30;
       }},1000)}
 
   getCount(){ //gets initial fence headcount
@@ -109,20 +102,33 @@ export class MapingPage implements OnInit {
         this.mapService.changePositions(this.objList, this.positions)
       })}
 
-  setPosition(){ //sets object position for locationHistory service
-    this.mapService.setObjectPosition(this.object_id, this.long,this.lat).subscribe(data =>{
-      console.log('Tried Position')
-    })}
+  // setPosition(){ //sets object position for locationHistory service
+  //   this.mapService.setObjectPosition(this.object_id, this.long,this.lat).subscribe(data =>{
+  //     console.log('Tried Position')
+  //   })}
 
-  reportObj(){ //reports object location to fence transitions service
-    this.mapService.postObjectReport(this.object_id, this.long,this.lat).subscribe(data =>{
-      console.log('Tried Report')
-    })}
+  // reportObj(){ //reports object location to fence transitions service
+  //   this.mapService.postObjectReport(this.object_id, this.long,this.lat).subscribe(data =>{
+  //     console.log('Tried Report')
+  //   })}
 
-  checkIn(){
-    this.setPosition()
-    this.reportObj()
-  }
+    checkIn(){
+      this.mapService.setObjectPosition(this.object_id ,this.long,this.lat).subscribe(data =>{
+      console.log("Position Set")
+    })
+     this.mapService.postObjectReport(this.object_id,this.long,this.lat).subscribe(data =>{
+       console.log("Position Posted")
+      })
+      this.presentAlert("You have checked in!", "You have checked in! Remember to wear your mask :)")
+      this.getCount()
+      this.getLast()
+    }
+    async getLast(){
+      this.mapService.getObjectLastPosition("29017b68-dc6f-431c-aaaa-09e81400d956").subscribe(dat => {
+        this.data = dat;
+        this.timestamp  = this.datePipe.transform(this.data.objectState.timestamp, 'short');
+   });
+    }
 
   colorExposure(){ //Colors the Cards according to Exposure Risk Level
     //Doesn't autoload, have to click somewhere on page to color code
@@ -147,21 +153,11 @@ export class MapingPage implements OnInit {
     // this.long =  this.loc.lng;
     // this.lat = this.loc.lat;
     this.fenceList = this.firestoreService.getAllFences("valpo_fences").valueChanges()
-    this.getCount()
-   // this.move()
-
+    this.movePositions()
+    //this.getCount()
+    //this.move()
     
-     this.mapService.getObjectLastPosition("29017b68-dc6f-431c-aaaa-09e81400d956").subscribe(dat => {
-          this.data = dat;
-          var coordinates = this.data.objectState.geometry.coordinates
-          this.timestamp  = this.datePipe.transform(this.data.objectState.timestamp, 'short');
-     });
-
-     var coordinates;
-    this.getLast().then(data =>{
-      coordinates = data
-    })
-     console.log(coordinates)
+    this.getLast()
 
     var center = [ -87.041201, 41.463325]
     this.map = tt.map({
@@ -179,22 +175,18 @@ export class MapingPage implements OnInit {
     for(var x=0; x < this.positions.length; x++){
       var marker = new tt.Marker().setLngLat(this.positions[x]).setPopup(new tt.Popup({offset: 30}).setText(this.pos_names[x]))
       marker.addTo(this.map)
+
  }
     const el = document.createElement('div');
     el.innerHTML = "<img src='assets/img/user.png' style='width: 45px; height: 45px; border-radius: 15px;'>";
     var userMarker =  new tt.Marker({element: el, draggable: true}).setLngLat(center).setPopup(new tt.Popup({offset: 30}).setText("Drag to Check in")).addTo(this.map)
-    //userMarker.togglePopup();
-
-    userMarker.on('dragend',function(){
+    var ll;
+   ll = userMarker.on('dragend',function(){
       var lngLat = userMarker.getLngLat();
       console.log(lngLat)
-      //lngLat = new tt.LngLat(roundLatLng(lngLat.lng), roundLatLng(lngLat.lat));
-      // userMarker.setPopup(new tt.Popup({offset: 30}).setText(lngLat.toString()))
-      // userMarker.togglePopup();
-      this.long = lngLat.lng
-      this.lat = lngLat.lat
+      return lngLat
         });
-
-    
-
+        ll = ll.getLngLat()
+        this.long = ll.lng
+        this.lat = ll.lat
  }}

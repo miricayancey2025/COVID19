@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http'
 import { map } from 'rxjs/operators';
 import { FirestoreService } from './firestore.service';
-const API_URL = environment.map_apiUrl;
-const API_KEY = environment.map_apiKey;
-const PROJECT_ID = environment.map_projectID;
-const ADMIN_KEY = environment.map_adminKey
-var ISO_date = new Date().toISOString().substring(0, new Date().toISOString().length - 5)
+const API_URL = 'https://api.tomtom.com';
+const API_KEY = 'xhSLlv6eLXVggB5hbMeTK87voMmu2LV3'
+const PROJECT_ID = 'c669e2a6-bb95-4986-8341-b8f4312adb51';
+const ADMIN_KEY = '2dhUQXB09HvX7UlNWZ8M41NHyGwIiV5mGcmGFPQ0TvWcvUkJ'
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +42,8 @@ export class MapService {
         "type": "Point",
         "coordinates": [
           ${long},
-          ${lat}
+          ${lat},
+          0.0
         ]
       },
       "object": "${object_id}"
@@ -63,7 +62,8 @@ export class MapService {
         "type": "Point",
         "coordinates": [
           ${long},
-          ${lat}
+          ${lat},
+          0.0
         ]
       }
     }`

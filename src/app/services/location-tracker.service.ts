@@ -2,7 +2,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { BackgroundGeolocation, BackgroundGeolocationConfig, BackgroundGeolocationEvents, BackgroundGeolocationResponse } from '@ionic-native/background-geolocation/ngx';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
 import { filter } from 'rxjs/operators';
-import { MapService } from '../services/map.service';
+import { MapService } from './map.service';
 
 
 
@@ -19,9 +19,7 @@ export class LocationTrackerService {
 
 
 startTracking() {
-
     // Background Tracking
-
     let config = {
       desiredAccuracy: 0,
       stationaryRadius: 20,
@@ -31,22 +29,20 @@ startTracking() {
     };
 
     this.backgroundGeolocation.configure(config).then((location) => {
-
       console.log('BackgroundGeolocation:  ' + location.latitude + ',' + location.longitude);
-
       // Run update inside of Angular's zone
       this.zone.run(() => {
         this.lat = location.latitude;
         this.lng = location.longitude;
       });
-            // this.mapService.setObjectPosition(this.object_id, this.lat,this.lng).subscribe(data => {
+
+      //sets the user's location using the background geolocation. Disabled for demo
+
+      // this.mapService.setObjectPosition(this.object_id, this.lat,this.lng).subscribe(data => {
       //   console.log(data);
       // })
-
     }, (err) => {
-
       console.log(err);
-
     });
 
     // Turn ON the background-geolocation system.
@@ -55,17 +51,14 @@ startTracking() {
 
     // Foreground Tracking
 
-  let options = {
+  let options = { //frequency of "pinging" user location and accuracy of their position
     frequency: 120000, 
     enableHighAccuracy: true
   };
 
   this.watch = this.geolocation.watchPosition(options).pipe(
     filter((p) => p.coords !== undefined)).subscribe((position: Geoposition) => {
-
     console.log("Foreground Geolocation" + position);
-
-
     // Run update inside of Angular's zone
     this.zone.run(() => {
       this.lat = position.coords.latitude;
@@ -76,10 +69,8 @@ startTracking() {
 
   }
 
-  stopTracking() {
-
+  stopTracking() { //Stops tracking user
     console.log('stopTracking');
-
     this.backgroundGeolocation.finish();
     this.watch.unsubscribe();
 

@@ -1,11 +1,10 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import tt from '@tomtom-international/web-sdk-maps';
 import { MapService } from '../../services/map.service';
-import { LocationTrackerService} from '../../providers/location-tracker.service'
+import { LocationTrackerService} from '../../services/location-tracker.service'
 import { DatePipe } from '@angular/common';
 import { FirestoreService } from '../../services/firestore.service';
 import { AuthService } from '../../services/auth.service';
-import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { AlertController } from '@ionic/angular';
 
 
@@ -18,20 +17,28 @@ import { AlertController } from '@ionic/angular';
   encapsulation: ViewEncapsulation.None
 })
 export class MapingPage implements OnInit {
-  data:any;
-  map: any;
-  lat = 0;long = 0;
+
+  //user's object string, hard coded for demo purposes so that no matter who logs in they are movng the same object (prevents api overload)
+  object_id ="29017b68-dc6f-431c-aaaa-09e81400d956";
+
+  //time/date variables
   timestamp;
   interval;
   previous;
-  current; 
-  object_id ="29017b68-dc6f-431c-aaaa-09e81400d956"; //user's object string
-  public objList;
-  public fenceList;
+  current;
   timeLeft: number = 30
-  switch: number = 10
   today = new Date();
   date =this.datePipe.transform(this.today, 'short');
+
+  
+  //list variables (object list pertains to the "student" objects and fence list pertains to the buildings)
+  objList;
+  fenceList;
+
+
+  //map variables
+  map: any;
+  lat = 0;long = 0;
   positions = [
     [-87.042634, 41.464394],  //Union    
     [-87.040241, 41.464114], //VUCA
@@ -46,12 +53,10 @@ export class MapingPage implements OnInit {
     "CHAPEL",
     "WELCOME CENTER"
   ]
-  userMarker: any;
-  clickSub: any;
-  
+
   constructor(public alertController: AlertController, private firestoreService: FirestoreService,  private mapService : MapService,     public authService: AuthService, private datePipe: DatePipe, private loc : LocationTrackerService) { }
 
-  async presentAlert(header, message) {
+  async presentAlert(header, message) { //presents an alert message
     const alert = await this.alertController.create({
       header: header,
       message: message,
@@ -60,7 +65,7 @@ export class MapingPage implements OnInit {
     await alert.present();
   }
 
-  move() { //sets a timer that automatically updates fence transitions
+  move() { //sets a timer that automatically moves objects through fences and updates fence transitions. Every 30 seconds for demo purposes
     this.interval = setInterval(() => {
       if(this.timeLeft > 0) {
         this.timeLeft--;
@@ -80,12 +85,15 @@ export class MapingPage implements OnInit {
     this.mapService.getFences().subscribe(data =>{
       list = data
       list = list.fences
-      //console.log(list)
       for(var x = 0; x < list.length; x++){
         this.mapService.getFenceHeadCount(list[x].id, this.previous, this.current).subscribe(data =>{
           console.log("Successful Fence Update!")
         })}})}
-    
+
+  refresh(){ //Refreshes Fence Count and displays alert
+    this.getCount()
+    this.presentAlert("Page Refreshed", "Page has been Refreshed!")
+  }
 
   getObjects() { //gets all the objects from the mapService
       return new Promise((resolve) =>{
@@ -102,37 +110,27 @@ export class MapingPage implements OnInit {
         this.mapService.changePositions(this.objList, this.positions)
       })}
 
-  // setPosition(){ //sets object position for locationHistory service
-  //   this.mapService.setObjectPosition(this.object_id, this.long,this.lat).subscribe(data =>{
-  //     console.log('Tried Position')
-  //   })}
-
-  // reportObj(){ //reports object location to fence transitions service
-  //   this.mapService.postObjectReport(this.object_id, this.long,this.lat).subscribe(data =>{
-  //     console.log('Tried Report')
-  //   })}
-
-    checkIn(){
+    checkIn(){ //checks in user's current position and updates last pin value + gets current population
       this.mapService.setObjectPosition(this.object_id ,this.long,this.lat).subscribe(data =>{
-      console.log("Position Set")
+      console.log("User Position Set!")
     })
      this.mapService.postObjectReport(this.object_id,this.long,this.lat).subscribe(data =>{
-       console.log("Position Posted")
+       console.log("User Position Posted!")
       })
       this.presentAlert("You have checked in!", "You have checked in! Remember to wear your mask :)")
       this.getCount()
       this.getLast()
     }
-    async getLast(){
+
+    getLast(){ // get's the user's last known position
+    var data;
       this.mapService.getObjectLastPosition("29017b68-dc6f-431c-aaaa-09e81400d956").subscribe(dat => {
-        this.data = dat;
-        this.timestamp  = this.datePipe.transform(this.data.objectState.timestamp, 'short');
+        data = dat;
+        this.timestamp  = this.datePipe.transform(data.objectState.timestamp, 'short');
    });
     }
 
   colorExposure(){ //Colors the Cards according to Exposure Risk Level
-    //Doesn't autoload, have to click somewhere on page to color code
-    //Low population threshold set for demo
       var classList = document.getElementsByClassName("card")
       for(var x = 0; x <classList.length; x++){
         var childs = (classList[x].childNodes)[0].childNodes
@@ -149,16 +147,27 @@ export class MapingPage implements OnInit {
           classList[x].setAttribute("style", "background-color: green")
           childs[2].textContent = "Exposure Risk: Green"}
 }}
+
+
   ngOnInit() {
+    
+    //variables set to update user location thorugh background location services. Disabled for demo
     // this.long =  this.loc.lng;
     // this.lat = this.loc.lat;
+
+
+    //displays fence values from a seperate database to insure user always has the last fence values if there was a disconnect with API
     this.fenceList = this.firestoreService.getAllFences("valpo_fences").valueChanges()
+
+
+    //Sets up preemptive fence + user values
     this.movePositions()
     //this.getCount()
     //this.move()
-    
     this.getLast()
 
+
+    //Creates Map, user marker, and the marker for the fences (buildings)
     var center = [ -87.041201, 41.463325]
     this.map = tt.map({
       
@@ -172,15 +181,20 @@ export class MapingPage implements OnInit {
       minZoom: 15,
       
     });
+
+    //creates building markers
     for(var x=0; x < this.positions.length; x++){
       var marker = new tt.Marker().setLngLat(this.positions[x]).setPopup(new tt.Popup({offset: 30}).setText(this.pos_names[x]))
       marker.addTo(this.map)
 
  }
+    //creates user marker
     const el = document.createElement('div');
     el.innerHTML = "<img src='assets/img/user.png' style='width: 45px; height: 45px; border-radius: 15px;'>";
     var userMarker =  new tt.Marker({element: el, draggable: true}).setLngLat(center).setPopup(new tt.Popup({offset: 30}).setText("Drag to Check in")).addTo(this.map)
     var ll;
+    
+    //sets the users new location based on end drag location
    ll = userMarker.on('dragend',function(){
       var lngLat = userMarker.getLngLat();
       console.log(lngLat)

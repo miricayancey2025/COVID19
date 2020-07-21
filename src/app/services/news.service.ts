@@ -10,7 +10,7 @@ export class NewsService {
   API_KEY = '3dc14bae5256481a8836948584b8a9fa'
   constructor(private http: HttpClient) { }
 
-  getData(url){
+  getData(url){ //gets the news articles
     return this.http.get(`${this.API_URL}/${url}&apiKey=${this.API_KEY}`);
   }
 }

@@ -4,8 +4,8 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
   </ion-toolbar>
-
 </ion-header>
+
 
 <ion-content fullscreen="true" (click)="colorExposure()">
   <div class="header">  
@@ -13,11 +13,9 @@
     <p>Last Pin: {{timestamp}}   {{long}} {{lat}}</p>
   </div>
   <br>
-  <button (click)="getCount()" id="check">Refresh</button>
-  <button (click)="setPosition()" id="check">Check</button>
-  <button (click)="reportObj()" id="check">Report</button>
+  <button (click)="refresh()" id="check">Refresh</button>
+  <button (click)="checkIn()" id="check">Check</button>
   <div id="map"></div>
-  <!-- <button (click) = "presentAlert()">Notify</button> -->
   <br>
     <div  class="card" *ngFor="let fence of fenceList | async">
         <div id="content">

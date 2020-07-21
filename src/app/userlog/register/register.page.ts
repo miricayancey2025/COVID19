@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import {DataService} from '../../services/data.service'
 import { MapService } from '../../services/map.service';
 import { DatePipe } from '@angular/common';
 
@@ -33,7 +32,6 @@ export class RegisterPage implements OnInit {
     public authService: AuthService,
     private router: Router,
     public AlertCtrl: AlertController,
-    private dataService: DataService,
     private mapService : MapService,
     private datePipe: DatePipe,
 

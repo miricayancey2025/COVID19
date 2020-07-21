@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs-page';
 
-
+//Creates the pages that the tab app recognizes and can navigate too
 const routes: Routes = [
   {
     path: '',

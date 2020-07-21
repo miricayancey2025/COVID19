@@ -4,10 +4,9 @@ import { Router } from '@angular/router';
 import 'firebase/app'
 import 'firebase/auth'
 import { AlertController } from '@ionic/angular';
-import {DataService} from '../../services/data.service'
 import { MapService } from '../../services/map.service';
 import * as firebase from 'firebase';
-import { LocationTrackerService } from '../../providers/location-tracker.service';
+import { LocationTrackerService } from '../../services/location-tracker.service';
 
 
 @Component({
@@ -27,7 +26,6 @@ export class LoginPage implements OnInit {
     private mapService : MapService,
     public authService: AuthService,
     private router: Router,
-    private dataService: DataService,
     private locationTracker : LocationTrackerService,
     private alertCtrl: AlertController) { }
 
@@ -37,9 +35,6 @@ export class LoginPage implements OnInit {
   
     stopLocation(){
       this.locationTracker.stopTracking();
-    }
-    setFences(val){
-      this.dataService.fenceList = val
     }
   ngOnInit() {
   }
@@ -51,58 +46,34 @@ export class LoginPage implements OnInit {
       ()=>{
 
           //only allows pass if email is verified
-        ///if(this.authService.isEmailVerified) {
-          /* } else {
+        if(this.authService.isEmailVerified) {
+                  
+        //Takes a snapshot of user data to determine what time of user is signing in and routes to their pages
+        //Currently unecessary but set up for future use.
+
+        let self = this;
+        var documentReference = this.db.collection('users').doc(this.authService.getUserId());
+        
+        documentReference.get().then(function(documentSnapshot) {
+                                  if (documentSnapshot.exists) {
+
+                                      self.locationTracker.startTracking();
+                                      self.router.navigateByUrl('app');
+                                      self.authService.setLocalPersist();
+                                    /* }
+                                  else if(documentSnapshot.data().userType == "Admin"){
+                                    self.router.navigateByUrl('/tabs-admin');
+                                    self.authService.setLocalPersist();
+                                  } */}
+                                    else {
+                                    console.log('document not found');
+                                  }
+                            }) 
+           } else {
           window.alert('Email is not verified');
           return false;
-        }*/
+        }
 
-
-
-
-        //TAKES A SNAPSHOT OF USER DATA TO FIND OUT WHAT TYPE OF USER IS SIGNING IN
-        //AFTER WHICH SETS THE DATA SERVICE VARIABLES AND ROUTES
-
-          let self = this;
-          var documentReference = this.db.collection('users').doc(this.authService.getUserId());
-          
-          documentReference.get().then(function(documentSnapshot) {
-                                    if (documentSnapshot.exists) {
-
-
-               ///AGENT TEMPORARILY ROUTES TO THE ADMIN SIDE 
-                                      
-
-                                    /*   if(documentSnapshot.data().userType == "Agent"){
-                                      self.setAgent(documentSnapshot.data().userUID)
-                                      self.router.navigateByUrl('/agent-tabs');
-                                      self.authService.setLocalPersist();
-
-                                    } */
-                                      // else if(documentSnapshot.data().userType == "Client"){
-                                        // self.setClient(documentSnapshot.data().userUID)
-                                        self.locationTracker.startTracking();
-                                        self.router.navigateByUrl('app');
-                                        self.authService.setLocalPersist();
-
-                                        // // self.mapService.getFences().subscribe(fence =>{
-                                        // //   // self.fences = fence;
-                                        // //   // self.fences = Object.keys(self.fences).map(it => self.fences[it])
-                                        // //   // self.fences = self.fences[0]
-                                        // //   // self.setFences(self.fences)
-                                   
-                                        // })
-
-      
-                                      /* }
-                                    else if(documentSnapshot.data().userType == "Admin"){
-                                      self.router.navigateByUrl('/tabs-admin');
-                                      self.authService.setLocalPersist();
-                                    } */}
-                                      else {
-                                      console.log('document not found');
-                                    }
-                              }) 
       },
       async error => {
         const alert = this.alertCtrl.create({

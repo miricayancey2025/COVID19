@@ -17,7 +17,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFirestoreModule } from '@angular/fire/firestore'
-import { LocationTrackerService } from './providers/location-tracker.service';
+import { LocationTrackerService } from './services/location-tracker.service';
 import { BackgroundGeolocation } from '@ionic-native/background-geolocation/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocalNotifications} from '@ionic-native/local-notifications/ngx'

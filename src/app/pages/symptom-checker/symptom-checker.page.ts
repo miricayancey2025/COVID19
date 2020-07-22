@@ -40,7 +40,6 @@ export class SymptomCheckerPage implements OnInit {
       Symptom_ArrayList: this.formBuilder.array([], [Validators.required]),
       Sign_ArrayList: this.formBuilder.array([], [Validators.required])
     });
-
     this.onLoadCheckboxStatus();
   }
 
@@ -79,7 +78,6 @@ export class SymptomCheckerPage implements OnInit {
   //Symptom List
   onSelectionChangeSymptom(e, i) {
     const Symptom_ArrayList: FormArray = this.ionicForm.get('Symptom_ArrayList') as FormArray;
-    // this.CHECK_LIST[i].checked = e.target.checked;
     this.updateCheckControl(Symptom_ArrayList, e.target);
 
   }
@@ -87,22 +85,26 @@ export class SymptomCheckerPage implements OnInit {
   //Sign List
   onSelectionChangeSign(e, i) {
     const Sign_ArrayList: FormArray = this.ionicForm.get('Sign_ArrayList') as FormArray;
-    // this.CHECK_LIST[i].checked = e.target.checked;
     this.updateCheckControl(Sign_ArrayList, e.target);
 
   }
 
   submitForm() {
+    var lists = this.ionicForm.value
+    var sign_ls = lists.Sign_ArrayList;
+    var symp_ls = lists.Symptom_ArrayList;
+
     this.isFormSubmitted = true;
-    if(this.IN_CONTACT && this.SYMPTOMS_LIST.length > 1 && this.SIGNS_LIST.length > 1){
+    if(this.IN_CONTACT){
       this.router.navigate(["/app/positive"]);
-      console.log("This student has been in contacted with a COVID patient");
     }
-    // else if(!this.IN_CONTACT && this.ionicForm.Symptom_ArrayList[0] === 'None of the above'){
-    //   this.router.navigate(["/app/positive"]);
-    // }
-    else{
+
+    else if(!this.IN_CONTACT && symp_ls.length === 1 && sign_ls.length === 1 && symp_ls[0] === 'None of the above' && sign_ls[0] === 'None of the above'){
       this.router.navigate(["/app/negative"]);
+    }
+
+    else{
+      this.router.navigate(["/app/positive"]);
       console.log("Not in contact");
       
     }

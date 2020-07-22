@@ -1,29 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs-page';
-import { SchedulePage } from '../schedule/schedule';
 
 
 const routes: Routes = [
   {
-    path: 'tabs',
+    path: '',
     component: TabsPage,
     children: [
       {
-        path: 'schedule',
+        path: 'announcements',
         children: [
           {
             path: '',
-            component: SchedulePage,
-          },
-        ]
-      },
-      {
-        path: 'map',
-        children: [
-          {
-            path: '',
-            loadChildren: () => import('../map/map.module').then(m => m.MapModule)
+            loadChildren: () => import('../announcements/announcements.module').then(m => m.AnnouncementsPageModule)
           }
         ]
       },
@@ -37,15 +27,6 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'announcements',
-        children: [
-          {
-            path: '',
-            loadChildren: () => import('../announcements/announcements.module').then(m => m.AnnouncementsPageModule)
-          }
-        ]
-      },
-      {
         path: 'symptoms',
         children: [
           {
@@ -54,13 +35,47 @@ const routes: Routes = [
           }
         ]
       },
+      {
+        path: 'support',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../support/support.module').then(m => m.SupportModule)
+          }
+        ]
+      },
+
+      {
+        path: 'positive',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../positive/positive.module').then(m => m.PositivePageModule)
+          }
+        ]
+      },
+
+      {
+        path: 'negative',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../negative/negative.module').then(m => m.NegativePageModule)
+          }
+        ]
+      },
       
       {
         path: '',
-        redirectTo: '/app/tabs/schedule',
+        redirectTo: 'maping',
         pathMatch: 'full'
       }
     ]
+  },
+  {
+    path: '',
+    redirectTo: 'maping',
+    pathMatch: 'full'
   }
 ];
 

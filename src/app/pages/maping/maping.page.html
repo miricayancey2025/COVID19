@@ -3,27 +3,25 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Mirica Yancey</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen="true">
+<ion-content fullscreen="true" (click)="colorExposure()">
+  <div class="header">  
+    <!-- <h1>Map</h1> -->
+    <p>Last Pin: {{timestamp}}</p>
+  </div>
+  <br>
+  <button (click)="getCount()" id="check">Refresh</button>
+  <button (click)="checkIn()" id="check">Check In</button>
   <div id="map"></div>
-
-
-    <p>{{timeLeft}} Seconds Left....</p> 
-    <p>{{switch}} Switching in...</p>
-
-    <p>{{sum}}</p>
-    <button (click)="movePositions()">Move</button>
-    <button (click)="setPosition()">Set Position</button>
-    <button (click)="reportObj()">Report</button>
-    <button (click)="createObj()">Add Object</button>
-    <button (click)="deleteObj(data?.summary.id)">Delete Object</button>
-
-    <div class="card" *ngFor="let fence of fenceList | async">
-      <p>FenceList {{fence.name}} {{fence.population}}</p>
-    </div>
-
-
+  <!-- <button (click) = "presentAlert()">Notify</button> -->
+  <br>
+    <div  class="card" *ngFor="let fence of fenceList | async">
+        <div id="content">
+        <h2 class="fence_name">{{fence.name}} &nbsp;{{time}}</h2>
+      <p id="pop"> Population: {{ fence.population }}</p>
+       <p class="exposure"> Exposure Risk: </p>
+      </div>
+  </div>
 </ion-content>

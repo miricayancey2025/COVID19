@@ -20,6 +20,8 @@ export class LoginPage implements OnInit {
   email = '';
   password = '';
   db = firebase.firestore();
+  
+
 
   constructor(
     private mapService : MapService,
@@ -39,7 +41,6 @@ export class LoginPage implements OnInit {
     setFences(val){
       this.dataService.fenceList = val
     }
-fences;
   ngOnInit() {
   }
 
@@ -64,7 +65,7 @@ fences;
 
           let self = this;
           var documentReference = this.db.collection('users').doc(this.authService.getUserId());
-         
+          
           documentReference.get().then(function(documentSnapshot) {
                                     if (documentSnapshot.exists) {
 
@@ -81,15 +82,16 @@ fences;
                                       // else if(documentSnapshot.data().userType == "Client"){
                                         // self.setClient(documentSnapshot.data().userUID)
                                         self.locationTracker.startTracking();
-                                        self.router.navigateByUrl('/maping');
+                                        self.router.navigateByUrl('app');
                                         self.authService.setLocalPersist();
-                                        self.mapService.getFences().subscribe(fence =>{
-                                          self.fences = fence;
-                                          self.fences = Object.keys(self.fences).map(it => self.fences[it])
-                                          self.fences = self.fences[0]
-                                          self.setFences(self.fences)
+
+                                        // // self.mapService.getFences().subscribe(fence =>{
+                                        // //   // self.fences = fence;
+                                        // //   // self.fences = Object.keys(self.fences).map(it => self.fences[it])
+                                        // //   // self.fences = self.fences[0]
+                                        // //   // self.setFences(self.fences)
                                    
-                                        })
+                                        // })
 
       
                                       /* }

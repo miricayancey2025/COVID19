@@ -178,10 +178,10 @@ export class MapingPage implements OnInit {
 
 
     //Sets up preemptive fence + user values
-    this.movePositions()
-    this.getCount()
+    //this.movePositions()
+    //this.getCount()
     //this.move()
-    this.getLast()
+    //this.getLast()
 
     //Creates Map, user marker, and the marker for the fences (buildings)
     var center = [ -87.041201, 41.463325]
@@ -212,11 +212,14 @@ export class MapingPage implements OnInit {
     
     //sets the users new location based on end drag location
    ll = userMarker.on('dragend',function(){
-      var lngLat = userMarker.getLngLat();
-      console.log(lngLat)
-      return lngLat
+      var pos = userMarker.getLngLat();
+      var new_pos = [pos.lng, pos.lat]
+      userMarker.setLngLat(new_pos)
+      console.log(userMarker.getLngLat())
+      return pos
         });
         ll = ll.getLngLat()
         this.long = ll.lng
         this.lat = ll.lat
+        console.log(this.long, this.lat)
  }}

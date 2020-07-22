@@ -6,11 +6,12 @@ import { HttpClient } from '@angular/common/http'
   providedIn: 'root'
 })
 export class NewsService {
-  API_URL = 'https://newsapi.org/v2'
-  API_KEY = '3dc14bae5256481a8836948584b8a9fa'
+  API_URL = 'https://gnews.io/api/v3/search?q='
+  API_KEY = 'efe041c70fc4d988c25e7357166cb21e'
   constructor(private http: HttpClient) { }
 
-  getData(url){ //gets the news articles
-    return this.http.get(`${this.API_URL}/${url}&apiKey=${this.API_KEY}`);
+  //API gets back 10 news articles and allows 100 requests a day
+  getData(date){ //gets the news articles '${this.API_URL)covid-19&token=${this.API_KEY}'
+    return this.http.get(this.API_URL + "covid-19&mindate=" + date + "&image=required&token="+ this.API_KEY);
   }
 }

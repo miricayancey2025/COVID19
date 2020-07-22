@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-symptom-checker',
@@ -11,6 +13,8 @@ export class SymptomCheckerPage implements OnInit {
   ionicForm: FormGroup;
 
   isFormSubmitted = false;
+
+  IN_CONTACT = false;
 
   SYMPTOMS_LIST = [
     { name: 'Fever/Chills', value: 'Fever/Chills'},
@@ -28,15 +32,23 @@ export class SymptomCheckerPage implements OnInit {
     { name: 'Continuous or severe chest pain', value: 'Continuous or severe chest pain'},
     { name: 'Fever worsens', value: 'Fever worsens'},
     { name: 'Lightheaded (may faint or pass out)', value: 'Lightheaded (may faint or pass out)'},
+    { name: 'None of the above', value: 'None of the above' },
   ];
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private iab: InAppBrowser, private router: Router) {
     this.ionicForm = this.formBuilder.group({
       Symptom_ArrayList: this.formBuilder.array([], [Validators.required]),
       Sign_ArrayList: this.formBuilder.array([], [Validators.required])
     });
-
     this.onLoadCheckboxStatus();
+  }
+
+  is_in_contact() {
+    this.IN_CONTACT = true;
+  }
+
+  is_not_in_contact() {
+    this.IN_CONTACT = false;
   }
 
   updateCheckControl(cal, o) {
@@ -66,7 +78,6 @@ export class SymptomCheckerPage implements OnInit {
   //Symptom List
   onSelectionChangeSymptom(e, i) {
     const Symptom_ArrayList: FormArray = this.ionicForm.get('Symptom_ArrayList') as FormArray;
-    // this.CHECK_LIST[i].checked = e.target.checked;
     this.updateCheckControl(Symptom_ArrayList, e.target);
 
   }
@@ -74,13 +85,29 @@ export class SymptomCheckerPage implements OnInit {
   //Sign List
   onSelectionChangeSign(e, i) {
     const Sign_ArrayList: FormArray = this.ionicForm.get('Sign_ArrayList') as FormArray;
-    // this.CHECK_LIST[i].checked = e.target.checked;
     this.updateCheckControl(Sign_ArrayList, e.target);
 
   }
 
   submitForm() {
+    var lists = this.ionicForm.value
+    var sign_ls = lists.Sign_ArrayList;
+    var symp_ls = lists.Symptom_ArrayList;
+
     this.isFormSubmitted = true;
+    if(this.IN_CONTACT){
+      this.router.navigate(["/app/positive"]);
+    }
+
+    else if(!this.IN_CONTACT && symp_ls.length === 1 && sign_ls.length === 1 && symp_ls[0] === 'None of the above' && sign_ls[0] === 'None of the above'){
+      this.router.navigate(["/app/negative"]);
+    }
+
+    else{
+      this.router.navigate(["/app/positive"]);
+      console.log("Not in contact");
+      
+    }
     if (!this.ionicForm.valid) {
       console.log('Please provide all the required values!')
       return false;

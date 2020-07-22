@@ -52,6 +52,14 @@ const routes: Routes = [
   {
     path: 'maping',
     loadChildren: () => import('./pages/maping/maping.module').then( m => m.MapingPageModule)
+  },
+  {
+    path: 'positive',
+    loadChildren: () => import('./pages/positive/positive.module').then( m => m.PositivePageModule)
+  },
+  {
+    path: 'negative',
+    loadChildren: () => import('./pages/negative/negative.module').then( m => m.NegativePageModule)
   }
 
  

@@ -44,6 +44,26 @@ const routes: Routes = [
           }
         ]
       },
+
+      {
+        path: 'positive',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../positive/positive.module').then(m => m.PositivePageModule)
+          }
+        ]
+      },
+
+      {
+        path: 'negative',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../negative/negative.module').then(m => m.NegativePageModule)
+          }
+        ]
+      },
       
       {
         path: '',

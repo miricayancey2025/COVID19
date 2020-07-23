@@ -17,8 +17,6 @@ import { DatePipe } from '@angular/common';
 })
 
 export class RegisterPage implements OnInit {
-  fname: string = " "
-  lname: string = " "
   email: string = ""
   number: string = ""
   school: string = ""
@@ -51,7 +49,7 @@ export class RegisterPage implements OnInit {
     // }
 
   async register(): Promise<void> {
-    const { fname, lname, school, number, email, password, cpassword} = this;
+    const { number, email,school, password, cpassword} = this;
     if(password !== cpassword){
       return console.error("Passwords don't match")
     }
@@ -60,7 +58,7 @@ export class RegisterPage implements OnInit {
       ()=>{
         this.authService.sendVerificationMail();
 
-      const user = this.authService.createUser(fname, lname, school, email, false, number, 5, "Student")
+      const user = this.authService.createUser(school, email, false, number, 5, "Student")
       this.mapService.createObject(user, this.date).subscribe(data => {
         console.log(data);
       })

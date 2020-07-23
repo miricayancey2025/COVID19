@@ -20,6 +20,7 @@ export class MapingPage implements OnInit {
 
   //user's object string, hard coded for demo purposes so that no matter who logs in they are movng the same object (prevents api overload)
   object_id ="29017b68-dc6f-431c-aaaa-09e81400d956";
+  data;
 
   //time/date variables
   timestamp;
@@ -39,7 +40,8 @@ export class MapingPage implements OnInit {
 
   //map variables
   map: any;
-  lat = 0;long = 0;
+  lat = -87.044086
+  long = 41.462898
   positions = [
     [-87.042634, 41.464394],  //Union    
     [-87.040241, 41.464114], //VUCA
@@ -48,11 +50,11 @@ export class MapingPage implements OnInit {
     [-87.041009, 41.461265], //Welcome Center
   ];
   pos_names =[
-    "UNION",
-    "VUCA",
-    "LIBRARY",
-    "CHAPEL",
-    "WELCOME CENTER"
+    "The Union",
+    "The VUCA",
+    "The Library",
+    "The Chapel",
+    "The Welcome Center"
   ]
 
   constructor(public alertController: AlertController, private firestoreService: FirestoreService,  private mapService : MapService,     public authService: AuthService, private datePipe: DatePipe, private loc : LocationTrackerService) { }
@@ -112,6 +114,7 @@ export class MapingPage implements OnInit {
       })}
 
     checkIn(){ //checks in user's current position and updates last pin value + gets current population
+      console.log(this.long, this.lat)
       this.mapService.setObjectPosition(this.object_id ,this.long,this.lat).subscribe(data =>{
       console.log("User Position Set!")
     })
@@ -119,7 +122,7 @@ export class MapingPage implements OnInit {
        console.log("User Position Posted!")
       })
       this.presentAlert("You have checked in!", "You have checked in! Remember to wear your mask :)")
-      this.getCount()
+      this.getCount() // change to false
       this.getLast()
       this.hotspotDetection()
     }
@@ -151,20 +154,25 @@ export class MapingPage implements OnInit {
       var classList = document.getElementsByClassName("card")
       for(var x = 0; x <classList.length; x++){
         var childs = (classList[x].childNodes)[0].childNodes
-        var num : number =+(childs[1].textContent.split(" "))[2]
+        var num : number =+(childs[2].textContent.split(" "))[2]
         if(num > 100 && num < 300){
           classList[x].setAttribute("style", "background-color: orange")
-          childs[2].textContent = "Exposure Risk: Orange"}
+          childs[3].textContent = "Exposure Risk: Orange"}
 
         else if(num >= 300){
           classList[x].setAttribute("style", "background-color: red")
-          childs[2].textContent = "Exposure Risk: Red"}
+          childs[3].textContent = "Exposure Risk: Red"}
 
         else{
           classList[x].setAttribute("style", "background-color: green")
-          childs[2].textContent = "Exposure Risk: Green"}
+          childs[3].textContent = "Exposure Risk: Green"}
 }}
 
+setLongLat(longo, lato){
+  this.long = longo
+  this.lat = lato
+  console.log(this.long, this.lat)
+}
 
   ngOnInit() {
     
@@ -178,13 +186,16 @@ export class MapingPage implements OnInit {
 
 
     //Sets up preemptive fence + user values
-    //this.movePositions()
-    //this.getCount()
+    this.movePositions()
     //this.move()
-    //this.getLast()
+
+    this.mapService.getObjectLastPosition("29017b68-dc6f-431c-aaaa-09e81400d956").subscribe(dat => {
+      this.data = dat;
+      this.timestamp  = this.datePipe.transform(this.data.objectState.timestamp, 'short');
+ });
 
     //Creates Map, user marker, and the marker for the fences (buildings)
-    var center = [ -87.041201, 41.463325]
+    var center =[-87.0422993571512, 41.463217639900876]
     this.map = tt.map({
       
       key: 'xhSLlv6eLXVggB5hbMeTK87voMmu2LV3',
@@ -200,26 +211,24 @@ export class MapingPage implements OnInit {
 
     //creates building markers
     for(var x=0; x < this.positions.length; x++){
-      var marker = new tt.Marker().setLngLat(this.positions[x]).setPopup(new tt.Popup({offset: 30}).setText(this.pos_names[x]))
+      const el = document.createElement('div');
+      el.innerHTML = "<img src='assets/img/user.png' style='width: 45px; height: 45px; border-radius: 15px;'>";
+      var marker = new tt.Marker({element: el}).setLngLat(this.positions[x]).setPopup(new tt.Popup({offset: 30}).setText(this.pos_names[x]))
       marker.addTo(this.map)
 
  }
     //creates user marker
     const el = document.createElement('div');
-    el.innerHTML = "<img src='assets/img/user.png' style='width: 45px; height: 45px; border-radius: 15px;'>";
-    var userMarker =  new tt.Marker({element: el, draggable: true}).setLngLat(center).setPopup(new tt.Popup({offset: 30}).setText("Drag to Check in")).addTo(this.map)
+    el.innerHTML = "<img src='assets/img/pin.png' style='width: 45px; height: 45px; border-radius: 15px;'>";
+    var userMarker =  new tt.Marker({element: el, draggable: true}).setLngLat([-87.04294308731171, 41.46308899999883]).setPopup(new tt.Popup({offset: 30}).setText("Drag to Check in")).addTo(this.map)
     var ll;
+    console.log("Pre Drag", userMarker.getLngLat())
     
     //sets the users new location based on end drag location
-   ll = userMarker.on('dragend',function(){
+   userMarker.on('dragend',function(){
       var pos = userMarker.getLngLat();
-      var new_pos = [pos.lng, pos.lat]
-      userMarker.setLngLat(new_pos)
-      console.log(userMarker.getLngLat())
-      return pos
+      this.setLongLat(pos.lng, pos.lat)
         });
-        ll = ll.getLngLat()
-        this.long = ll.lng
-        this.lat = ll.lat
-        console.log(this.long, this.lat)
- }}
+ }
+
+}

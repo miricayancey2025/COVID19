@@ -25,6 +25,8 @@ import { LocalNotifications} from '@ionic-native/local-notifications/ngx'
 
 // environment
 import { environment } from '../environments/environment';
+import { DatePipe } from '@angular/common';
+
 
 @NgModule({
   imports: [
@@ -45,7 +47,7 @@ import { environment } from '../environments/environment';
     })
   ],
   declarations: [AppComponent],
-  providers: [InAppBrowser, SplashScreen, StatusBar, AngularFirestoreModule, LocationTrackerService,BackgroundGeolocation, Geolocation, LocalNotifications],
+  providers: [InAppBrowser, SplashScreen, StatusBar, AngularFirestoreModule, LocationTrackerService,BackgroundGeolocation, Geolocation, LocalNotifications, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

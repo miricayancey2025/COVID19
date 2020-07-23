@@ -79,12 +79,12 @@ export class AuthService {
   }
 
   createUser( //creates user
-    firstName: string, lastName: string, school: string,  email: string,
+    school: string,  email: string,
     emailVerified: boolean, phoneNumber: string, points: Number, type: string
   ){
     var user = firebase.auth().currentUser;
     var userUID = user.uid;
-    this.afStore.doc('users/' + userUID).set({userUID, firstName, lastName, school, email, emailVerified, phoneNumber, points, type});
+    this.afStore.doc('users/' + userUID).set({userUID, school, email, emailVerified, phoneNumber, points, type});
     return userUID;
   }
   

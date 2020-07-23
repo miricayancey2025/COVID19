@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { map } from 'rxjs/operators';
 import { FirestoreService } from './firestore.service';
+import { DatePipe } from '@angular/common';
 
 //Keys needed to access TomTom API
 const API_KEY = 'xhSLlv6eLXVggB5hbMeTK87voMmu2LV3'
@@ -12,7 +13,7 @@ const ADMIN_KEY = '2dhUQXB09HvX7UlNWZ8M41NHyGwIiV5mGcmGFPQ0TvWcvUkJ'
   providedIn: 'root'
 })
 export class MapService {
-  constructor(private http: HttpClient, private firestoreService: FirestoreService) { }
+  constructor(private http: HttpClient, private firestoreService: FirestoreService, private datePipe: DatePipe) { }
 
   changePositions(objList, posList){ //randomly changes the position for all objects that are not the user and posts their location to locationHistory and Fence API
     var num = posList.length
@@ -99,10 +100,10 @@ export class MapService {
   getFenceHeadCount(fence_id,previous,current){ // gets a headcount of how many objects are in the fence
     var sum = 0;
     var transList;
-    var time;
     var population: Array<any>= [];
     return this.getFenceTransitions(fence_id, previous,current).pipe(map((res: Response) =>{
       transList = res
+      // console.log(transList)
       transList.transitions.features.map(item =>{
         population.push(item.transitionType)
         var add = 0;
@@ -122,11 +123,8 @@ export class MapService {
        if(sum < 0){
          sum = sum + 100
        }
-       /////////////////////////////////////////
-       time = item.recordedTransitionTime
       })
       this.firestoreService.updateFence("valpo_fences", fence_id,current, sum)
-      return sum
     }))
 }
 

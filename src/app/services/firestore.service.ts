@@ -28,7 +28,7 @@ export class FirestoreService {
     return this.firestore.doc(col_name + "/" + id).set({id, name, pop});
   }
 
-  updateFence(col_name, id: string, value){
+  updateFence(col_name, id: string, time, value){
     this.db.doc(col_name + "/"+id).update({"population" : value})
   }  
 

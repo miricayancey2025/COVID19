@@ -119,7 +119,7 @@ export class MapService {
        if(sum < 0){
          sum = sum + 100
        }})
-      this.firestoreService.updateFence("valpo_fences", fence_id,current, sum)
+      this.firestoreService.updateFence("valpo_fences", fence_id, current, sum)
     }))}
 
   getFences(){ //gets all fences for a given project

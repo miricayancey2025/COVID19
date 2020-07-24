@@ -5,18 +5,9 @@ import { TabsPage } from './tabs-page';
 //Creates the pages that the tab app recognizes and can navigate too
 const routes: Routes = [
   {
-    path: 'tabs',
+    path: '',
     component: TabsPage,
     children: [
-      {
-        path: 'maping',
-        children: [
-          {
-            path: '',
-            loadChildren: () => import('../maping/maping.module').then(m => m.MapingPageModule)
-          }
-        ]
-      },
       {
         path: 'announcements',
         children: [
@@ -27,11 +18,29 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'maping',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../maping/maping.module').then(m => m.MapingPageModule)
+          }
+        ]
+      },
+      {
         path: 'symptoms',
         children: [
           {
             path: '',
             loadChildren: () => import('../symptom-checker/symptom-checker.module').then(m => m.SymptomCheckerPageModule)
+          }
+        ]
+      },
+      {
+        path: 'support',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../support/support.module').then(m => m.SupportModule)
           }
         ]
       },
@@ -58,10 +67,15 @@ const routes: Routes = [
       
       {
         path: '',
-        redirectTo: '/app',
+        redirectTo: 'maping',
         pathMatch: 'full'
       }
     ]
+  },
+  {
+    path: '',
+    redirectTo: 'maping',
+    pathMatch: 'full'
   }
 ];
 

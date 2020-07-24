@@ -1,11 +1,26 @@
 @import "@tomtom-international/web-sdk-maps";     
 #map {
       
-    height: 400px;
+    height: 50vh;
       
     width: 100%;
+      }
+
       
-}.header{
+ #check{
+     background-color: lightblue;
+     border-radius: 15px;
+     width:40%;
+     height:50px;
+     border-color:lightblue;
+     margin-left: 7%;
+     margin-bottom: 5%;
+     font-size: 20px;
+ }  
+ #name{
+     text-align: center;
+ }   
+.header{
     text-align: center;
     color: rgb(146, 184, 197);
     border-bottom-style: solid;
@@ -13,7 +28,7 @@
     border-width: 2px;
     width: 55%;
     margin-left:22%;
-    margin-top: 5%;
+    margin-top: 10%;
 
 }
   .fence_name{
@@ -21,11 +36,9 @@
       text-align: center;
   }
   .time{
-      float:right;
-      margin-right: 10%;
+      text-align: center;
       font-size: 15px;
-      border-color: lightgray;
-      border-bottom: solid;
+      margin-top: 0;
   }
 
   .info{
@@ -40,7 +53,7 @@
     border-radius: 10px;
     margin-bottom: 5%;
     background-color: snow;
-    height: 20%;
+    height: 30%;
     margin-top: 0;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 

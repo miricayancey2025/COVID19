@@ -23,8 +23,7 @@ export class FirestoreService {
     this.db = firebase.firestore();
    }
 
-////////////Class Group methods///////////////
-
+//Fence Methods
    addFence(col_name, id:string, name:string, pop: number): Promise<void> {
     return this.firestore.doc(col_name + "/" + id).set({id, name, pop});
   }
@@ -32,15 +31,24 @@ export class FirestoreService {
   updateFence(col_name, id: string, value){
     this.db.doc(col_name + "/"+id).update({"population" : value})
   }  
-  //////////////////////////////////////////////////////////////////////////////////////////////
 
-//returns ALL documents in that collection
+//returns ALL fences in a given fence collection
 getAllFences(doc): AngularFirestoreCollection<any> {
   return this.firestore.collection(doc);
 }
 
+//gets the details of a particular document
+getDetail(doc:string, val: string): AngularFirestoreDocument<any>{
+  return this.firestore.collection(doc).doc(val);
+}
 
-//////////Contact Methods////////////  
+
+
+//Legacy Methods for Future Use and further implemenation of the app//
+
+
+
+//////////Contact Methods////////////  For Future use.
 
   createContact(title: string, content: string, userUID : string,): Promise<void> {
       const id = this.firestore.createId();
@@ -50,10 +58,6 @@ getAllFences(doc): AngularFirestoreCollection<any> {
  editContact(contactId, new_title, new_content){
       this.db.doc("userContacts/"+contactId).update({title : new_title, content: new_content})
     }
-/////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
 
  //currently case sensetive 
  //set up to search by two values but is currently incapable
@@ -70,32 +74,6 @@ getSearched(search : string, collection : string, condition: string, condition2:
   
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ///gets all documents with field set to a particular condition
 getOnly(collection : string, field: string, condition: string): AngularFirestoreCollection<any> {
   return this.firestore.collection(collection, ref => ref.where(field ,'==', condition));
@@ -107,12 +85,7 @@ getMy(collection : string, field: string): AngularFirestoreCollection<any> {
   return this.firestore.collection(collection, ref => ref.where(field ,'==', this.userId));
 
 }
-
-//gets the details of a particular document
-getDetail(doc:string, val: string): AngularFirestoreDocument<any>{
-  return this.firestore.collection(doc).doc(val);
-}
-//gets all of ONE user's documents
+//gets all of ONE user's documents, not necessarily the logged in user
 getList(doc, useriiD): AngularFirestoreCollection<any> {
   return this.firestore.collection(doc, ref => ref.where("userUID" ,'==', useriiD));
 }
@@ -131,21 +104,9 @@ delete(doc: string, id: string): Promise<void>{
   return this.firestore.doc(doc + '/' + id).delete();
 }
 
-//deletes document using a bridging id from another document
-deleteBridge(collect: string, field: string, val: string): Promise<void>{
-  let doc = this.getOnly(collect, field, val ).snapshotChanges()
-  let eventID;
-  doc.subscribe(payload =>{
-    payload.forEach(item =>{
-        eventID = item.payload.doc.data().eventUID
-    })
-    return this.firestore.doc(collect + '/' + eventID).delete();      
-    })
-    return null
-/////////////////////////////////////////////////////////////////////////////////////////////////
-}
 
-//deletes user and all documents assoicated with user
+
+//deletes user and all documents assoicated with user. Legacy Code, will change
 deleteAll(id: string): Promise<void>{
   this.firestore.doc("users" + '/' + id).delete();
   let assignments = this.getOnly("assignments", "userUID", id ).snapshotChanges()
@@ -153,8 +114,6 @@ deleteAll(id: string): Promise<void>{
   let entries = this.getOnly("currentEntries", "userUID", id ).snapshotChanges()
   let impulses = this.getOnly("impulseList", "userUID", id ).snapshotChanges()
   let contacts = this.getOnly("userContacts", "userUID", id).snapshotChanges()
-  
-  
   ///// NEEDS TO BE CHANGED
   assignments.subscribe(payload =>{
     payload.forEach(item =>{

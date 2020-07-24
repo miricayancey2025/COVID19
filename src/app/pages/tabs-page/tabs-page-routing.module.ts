@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs-page';
 import { SchedulePage } from '../schedule/schedule';
 
-
+//Creates the pages that the tab app recognizes and can navigate too
 const routes: Routes = [
   {
     path: 'tabs',
@@ -51,6 +51,26 @@ const routes: Routes = [
           {
             path: '',
             loadChildren: () => import('../symptom-checker/symptom-checker.module').then(m => m.SymptomCheckerPageModule)
+          }
+        ]
+      },
+
+      {
+        path: 'positive',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../positive/positive.module').then(m => m.PositivePageModule)
+          }
+        ]
+      },
+
+      {
+        path: 'negative',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../negative/negative.module').then(m => m.NegativePageModule)
           }
         ]
       },

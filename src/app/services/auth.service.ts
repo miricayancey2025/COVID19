@@ -16,7 +16,8 @@ export class AuthService {
     public ngFireAuth: AngularFireAuth,
     public router: Router,
     public ngZone: NgZone
-  ) {
+  ) 
+  {
     this.ngFireAuth.onAuthStateChanged(user => {
       if(user) {
         this.userData = user;
@@ -33,7 +34,7 @@ export class AuthService {
     firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
   }
 
-  loginUser(
+  loginUser( //logs in user
     email: string,
     password: string
   ): Promise<firebase.auth.UserCredential> {
@@ -43,7 +44,7 @@ export class AuthService {
   }
 
 
-  registerUser(
+  registerUser(  //registers user as an authorized firebase account
     email: string,
     password: string
   ): Promise<any> {
@@ -51,13 +52,13 @@ export class AuthService {
     });
   }
 
-  async sendVerificationMail(){
+  async sendVerificationMail(){ //sends user a verification email
     return (await this.ngFireAuth.currentUser).sendEmailVerification().then(()=>{
       this.router.navigate(['verify-email']);
     })
   }
 
-  resetPassword(email: string): Promise<void> {
+  resetPassword(email: string): Promise<void> { // sends a resetPassword email
     return this.ngFireAuth.sendPasswordResetEmail(email).then(()=>{
       window.alert('Check your email to reset your password!')
       this.router.navigateByUrl('/login')
@@ -66,43 +67,24 @@ export class AuthService {
     });
   }
 
-  get isLoggedIn(): boolean {
+  get isLoggedIn(): boolean { // returns if the user is logged in
     const user = JSON.parse(localStorage.getItem('user'));
     return (user !== null) ? true : false;
   }
   // && user.emailVerified !== false
 
-  get isEmailVerified(): boolean {
+  get isEmailVerified(): boolean { //gets if user's email is verified or not to allow log in
     const user = JSON.parse(localStorage.getItem('user'));
     return (user.emailVerified !== false) ? true : false;
   }
 
-  /*
-  GoogleAuth(){
-    return this.AuthLogin(new firebase.auth.GoogleAuthProvider());
-  }
-
-  AuthLogin(provider){
-    return this.ngFireAuth.auth.signInWithPopup(provider).then((result) =>{
-      this.ngZone.run(()=>{
-        this.router.navigateByUrl('/tabs/tab2');
-      })
-      this.SetUserData(result.user);
-      console.log(result.user);
-      console.log(this.userData);
-    }).catch((error) => {
-      window.alert(error);
-    })
-  }
-  */
-
-  createUser(
-    firstName: string, lastName: string, school: string,  email: string,
+  createUser( //creates user
+    school: string,  email: string,
     emailVerified: boolean, phoneNumber: string, points: Number, type: string
   ){
     var user = firebase.auth().currentUser;
     var userUID = user.uid;
-    this.afStore.doc('users/' + userUID).set({userUID, firstName, lastName, school, email, emailVerified, phoneNumber, points, type});
+    this.afStore.doc('users/' + userUID).set({userUID, school, email, emailVerified, phoneNumber, points, type});
     return userUID;
   }
   
@@ -111,25 +93,24 @@ export class AuthService {
     this.afStore.doc("users/"+this.userData.userUID).update({photoURL : photo, email: mail, phoneNumber: number})
   }
 
-  getUserEmail(){
+  getUserEmail(){ //returns the user's email
     return this.userData.email;
   }
 
-  getUserId(){
-   // console.log(this.userData.uid)
+  getUserId(){ // returns the user's id
     return this.userData.uid;
   }
 
-  getUserType(){
+  getUserType(){ // gets the user type either student or administrator. In place for the future.
     console.log(this.userData.userType)
     return this.userData.userType;
   }
 
-  logOutUser(): Promise<void> {
+  logOutUser(): Promise<void> { // signs out user and removes them from local storage
     return this.ngFireAuth.signOut().then(()=>{
       console.log("Logout successful");
       localStorage.removeItem('user');
-      this.router.navigateByUrl('/register');
+      this.router.navigateByUrl('/login');
     });
   }
 }

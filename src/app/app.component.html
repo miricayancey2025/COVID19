@@ -14,7 +14,6 @@
                 {{p.title}}
               </ion-label>
             </ion-item>
-
           </ion-menu-toggle>
         </ion-list>
 
@@ -60,6 +59,7 @@
           </ion-item>
 
         </ion-list>
+        <ion-button type="submit" id="logout" (click)="authService.logOutUser()">Log Out</ion-button>  
       </ion-content>
     </ion-menu>
 

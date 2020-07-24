@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CheckTutorial } from './providers/check-tutorial.service';
+import { CheckTutorial } from './services/check-tutorial.service'; 
 
 const routes: Routes = [
   {
@@ -52,6 +52,14 @@ const routes: Routes = [
   {
     path: 'maping',
     loadChildren: () => import('./pages/maping/maping.module').then( m => m.MapingPageModule)
+  },
+  {
+    path: 'positive',
+    loadChildren: () => import('./pages/positive/positive.module').then( m => m.PositivePageModule)
+  },
+  {
+    path: 'negative',
+    loadChildren: () => import('./pages/negative/negative.module').then( m => m.NegativePageModule)
   }
 
  

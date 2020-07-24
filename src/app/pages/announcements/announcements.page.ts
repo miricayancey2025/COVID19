@@ -12,23 +12,24 @@ import { DatePipe } from '@angular/common';
 
 }) 
 export class AnnouncementsPage implements OnInit {
-  public currentStudents;
-  data: any;
-  myDate : any = this.datePipe.transform(new Date(), 'short');
+  
+  data: any; //article list data
+  myDate : any = this.datePipe.transform(new Date(), 'shortDate'); //today's date
 
 
-  constructor( private datePipe: DatePipe, public firestoreService: FirestoreService, private newsService:NewsService,
-    private iab: InAppBrowser,
- ) {}
+  constructor( private datePipe: DatePipe, public firestoreService: FirestoreService, private newsService:NewsService,private iab: InAppBrowser) {}
+
+ openUrl(url){ //opens the url to any news story
+  const browser = this.iab.create(url)
+}
   ngOnInit() {
-    //everything from today will need a date object
-    this.newsService.getData('everything?qInTitle=covid OR covid-19 OR corona&language=en&from=${myDate}&sortBy=publishedAt').subscribe(data => {
-      console.log(data);
+
+    //gets all news from the current date about COVID in english
+    this.newsService.getData(this.myDate).subscribe(data => {
+      // console.log(data);
       this.data = data;
         })
-  // this.currentStudents = this.firestoreService.getListAll("student-users").valueChanges();
   }
-  openUrl(url){
-    const browser = this.iab.create(url)
-  }
+
+
 }

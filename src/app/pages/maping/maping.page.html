@@ -3,28 +3,26 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Mirica Yancey</ion-title>
   </ion-toolbar>
-
 </ion-header>
 
-<ion-content fullscreen="true">
+
+<ion-content fullscreen="true" (click)="colorExposure()">
+  <div class="header">  
+    <h1>Hotspot</h1>
+    <p>Last Pin: {{timestamp}}</p>
+  </div>
+  <br>
+  <button (click)="refresh()" id="check">Refresh</button>
+  <button (click)="checkIn()" id="check">Check</button>
   <div id="map"></div>
-
-
-    <p>{{timeLeft}} Seconds Left....</p> 
-    <p>{{switch}} Switching in...</p>
-
-    <p>{{sum}}</p>
-    <button (click)="movePositions()">Move</button>
-    <button (click)="setPosition()">Set Position</button>
-    <button (click)="reportObj()">Report</button>
-    <button (click)="createObj()">Add Object</button>
-    <button (click)="deleteObj(data?.summary.id)">Delete Object</button>
-
-    <div class="card" *ngFor="let fence of fenceList | async">
-      <p>FenceList {{fence.name}} {{fence.population}}</p>
-    </div>
-
-
+  <br>
+    <div  class="card" *ngFor="let fence of fenceList | async">
+        <div id="content">
+        <h2 class="fence_name">{{fence.name}}</h2>
+        <p class="time">{{fence.time}}</p>
+      <p id="pop"> Population: {{ fence.population }}</p>
+       <p class="exposure"> Exposure Risk: </p>
+      </div>
+  </div>
 </ion-content>

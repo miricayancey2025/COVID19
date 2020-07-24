@@ -17,14 +17,16 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFirestoreModule } from '@angular/fire/firestore'
-import { LocationTrackerService } from './providers/location-tracker.service';
+import { LocationTrackerService } from './services/location-tracker.service';
 import { BackgroundGeolocation } from '@ionic-native/background-geolocation/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-
+import { LocalNotifications} from '@ionic-native/local-notifications/ngx'
 
 
 // environment
 import { environment } from '../environments/environment';
+import { DatePipe } from '@angular/common';
+
 
 @NgModule({
   imports: [
@@ -36,8 +38,8 @@ import { environment } from '../environments/environment';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
-    //AngularFireStorageModule,
-    AngularFirestoreModule,
+    //AngularFirestorageModule.enablePersistance(),
+    AngularFirestoreModule.enablePersistence(),
     IonicModule.forRoot(),
     IonicStorageModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {
@@ -45,7 +47,7 @@ import { environment } from '../environments/environment';
     })
   ],
   declarations: [AppComponent],
-  providers: [InAppBrowser, SplashScreen, StatusBar, AngularFirestoreModule, LocationTrackerService,BackgroundGeolocation, Geolocation],
+  providers: [InAppBrowser, SplashScreen, StatusBar, AngularFirestoreModule, LocationTrackerService,BackgroundGeolocation, Geolocation, LocalNotifications, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

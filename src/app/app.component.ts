@@ -8,8 +8,8 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { Storage } from '@ionic/storage';
+import { AuthService } from './services/auth.service';
 
-import { UserData } from './providers/user-data';
 
 @Component({
   selector: 'app-root',
@@ -46,9 +46,9 @@ export class AppComponent implements OnInit {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private storage: Storage,
-    private userData: UserData,
     private swUpdate: SwUpdate,
     private toastCtrl: ToastController,
+    public authService: AuthService,
   ) {
     this.initializeApp();
   }
@@ -88,4 +88,5 @@ export class AppComponent implements OnInit {
     this.storage.set('ion_did_tutorial', false);
     this.router.navigateByUrl('/tutorial');
   }
+  
 }

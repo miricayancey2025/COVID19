@@ -45,7 +45,7 @@ export class LoginPage implements OnInit {
 
           //only allows pass if email is verified
         if(this.authService.isEmailVerified) {
-                  
+        // localStorage.setItem("userid", this.authService.ngFireAuth.currentUser.)         
         //Takes a snapshot of user data to determine what time of user is signing in and routes to their pages
         //Currently unecessary but set up for future use.
 

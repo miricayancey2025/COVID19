@@ -38,8 +38,8 @@ import { DatePipe } from '@angular/common';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
-    //AngularFireStorageModule,
-    AngularFirestoreModule,
+    //AngularFirestorageModule.enablePersistance(),
+    AngularFirestoreModule.enablePersistence(),
     IonicModule.forRoot(),
     IonicStorageModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {

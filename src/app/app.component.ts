@@ -21,19 +21,24 @@ import { AuthService } from './services/auth.service';
 export class AppComponent implements OnInit {
   appPages = [
     {
-      title: 'Announcements',
-      url: '/app/tabs/announcements',
-      icon: 'newspaper'
-    },
-    {
       title: 'Hotspots',
-      url: '/app/tabs/map',
-      icon: 'people'
+      url: '/app/maping',
+      icon: 'pin-outline'
     },
     {
-      title: 'Map',
-      url: '/app/tabs/map',
-      icon: 'map'
+      title: 'Announcements',
+      url: '/app/announcements',
+      icon: 'newspaper-outline'
+    },
+    {
+      title: 'Symptoms',
+      url: '/app/symptoms',
+      icon: 'checkmark-done-circle-outline'
+    },
+    {
+      title: 'Help',
+      url: '/app/support',
+      icon: 'alert-circle-outline'
     },
   ];
   loggedIn = false;

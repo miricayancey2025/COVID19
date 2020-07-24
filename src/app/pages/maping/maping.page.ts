@@ -21,6 +21,7 @@ export class MapingPage implements OnInit {
   //user's object string, hard coded for demo purposes so that no matter who logs in they are movng the same object (prevents api overload)
   object_id ="29017b68-dc6f-431c-aaaa-09e81400d956";
   data;
+  infos;
   public db;
 
   //time/date variables
@@ -123,7 +124,6 @@ export class MapingPage implements OnInit {
     this.mapService.getObjectReport(this.object_id, this.long, this.lat).subscribe(data =>{
       var ins: any = data
       console.log(ins)
-      if(ins.inside.features > 0){
       var id = ins.inside.features[0].id
       this.firestoreService.getDetail("valpo_fences", id).valueChanges().subscribe(res =>{
         this.fence_inside = res
@@ -137,13 +137,9 @@ export class MapingPage implements OnInit {
       else{
         this.presentAlert("Green!", "You're entering a green zone! Remember to wear your mask :)")
       }
-    
     })
-      }
-      else{
-        this.presentAlert("Outside Fence", "Point is outside fence!")
-      }
-  })}
+  })
+}
 
   colorExposure(){ //Colors the Cards according to Exposure Risk Level
       var classList = document.getElementsByClassName("card")
@@ -176,9 +172,9 @@ return new Promise((resolve) =>{
 });}
 
 checkIn(){ //checks user into a building and out of the last building
-
-this.getLast().then(() =>{//Get's transitions from last time stamp to 10 hours after 
-  var d_2 = new Date(this.data.objectState.timestamp)
+  this.mapService.getObjectLastPosition("29017b68-dc6f-431c-aaaa-09e81400d956").subscribe(dat => {
+    this.infos = dat;
+  var d_2 = new Date(this.infos.objectState.timestamp)
   var last = d_2.toISOString().substring(0, d_2.toISOString().length - 5)
   d_2.setHours(d_2.getHours() + 10)
   var range= d_2.toISOString().substring(0, d_2.toISOString().length - 5)

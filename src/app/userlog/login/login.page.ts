@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import 'firebase/app'
 import 'firebase/auth'
 import { AlertController } from '@ionic/angular';
-import { MapService } from '../../services/map.service';
 import * as firebase from 'firebase';
 import { LocationTrackerService } from '../../services/location-tracker.service';
 
@@ -23,7 +22,6 @@ export class LoginPage implements OnInit {
 
 
   constructor(
-    private mapService : MapService,
     public authService: AuthService,
     private router: Router,
     private locationTracker : LocationTrackerService,

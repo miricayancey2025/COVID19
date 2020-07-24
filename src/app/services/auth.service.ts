@@ -110,7 +110,7 @@ export class AuthService {
     return this.ngFireAuth.signOut().then(()=>{
       console.log("Logout successful");
       localStorage.removeItem('user');
-      this.router.navigateByUrl('/register');
+      this.router.navigateByUrl('/login');
     });
   }
 }

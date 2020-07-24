@@ -25,10 +25,7 @@ export class MapService {
        })
         this.postObjectReport(objList[x].id,posList[rando][0], posList[rando][1]).subscribe(data =>{
           console.log("Position Posted")
-         })
-      }
-    }
-    };
+         })}}};
   
   getObjects(){ //gets all objects (students) in project
     return this.http.get(`https://api.tomtom.com/geofencing/1/objects?key=${API_KEY}`)
@@ -50,7 +47,6 @@ export class MapService {
     const headers = { 'Content-type': 'application/json'}  
     const body=JSON.parse(data);
 
-    
     return this.http.post(`https://api.tomtom.com/locationHistory/1/history/positions?key=${API_KEY}`, body,{'headers':headers})
   }
 
@@ -71,7 +67,6 @@ export class MapService {
     }`
     const body=JSON.parse(data);
     return this.http.post(`https://api.tomtom.com/geofencing/1/report/${PROJECT_ID}?key=${API_KEY}&point=${long},${lat},0.0&object=${object_id}`, body)
-
   }
 
   createObject(user_uid, date){ //create a new object under current user id
@@ -93,8 +88,9 @@ export class MapService {
   getObjectLastPosition(object_id){ //gets the last known position of user
     return this.http.get(`https://api.tomtom.com/locationHistory/1/history/position/${object_id}?key=${API_KEY}`);
   }
-  getLocationHistory(object_id,previous, current){ //gets the location history for 2 weeks for user
-    return this.http.get(`https://api.tomtom.com/locationHistory/1/history/positions/${object_id}?key=${API_KEY}&from${previous}=&to=${current}`);
+
+  getObjectTransitions(object_id, last, range){
+    return this.http.get(`https://api.tomtom.com/geofencing/1/transitions/objects/${object_id}?key=${API_KEY}&from=${last}&to=${range}&projects=${PROJECT_ID}`)
   }
 
   getFenceHeadCount(fence_id,previous,current){ // gets a headcount of how many objects are in the fence
@@ -122,11 +118,9 @@ export class MapService {
        sum = add - sub
        if(sum < 0){
          sum = sum + 100
-       }
-      })
+       }})
       this.firestoreService.updateFence("valpo_fences", fence_id,current, sum)
-    }))
-}
+    }))}
 
   getFences(){ //gets all fences for a given project
     return this.http.get(`https://api.tomtom.com/geofencing/1/projects/${PROJECT_ID}/fences?key=${API_KEY}`)

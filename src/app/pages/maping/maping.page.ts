@@ -137,10 +137,9 @@ export class MapingPage implements OnInit {
       else if(pop <=100){
         this.presentAlert("Green!", "You're entering a green zone! Remember to wear your mask :)")
       }
-    
     })
-      
-  })}
+  })
+}
 
   colorExposure(){ //Colors the Cards according to Exposure Risk Level
       var classList = document.getElementsByClassName("card")
@@ -173,10 +172,9 @@ return new Promise((resolve) =>{
 });}
 
 checkIn(){ //checks user into a building and out of the last building
-  
   this.mapService.getObjectLastPosition("29017b68-dc6f-431c-aaaa-09e81400d956").subscribe(dat => {
     this.infos = dat;
-var d_2 = new Date(this.infos.objectState.timestamp)
+  var d_2 = new Date(this.infos.objectState.timestamp)
   var last = d_2.toISOString().substring(0, d_2.toISOString().length - 5)
   d_2.setHours(d_2.getHours() + 10)
   var range= d_2.toISOString().substring(0, d_2.toISOString().length - 5)
